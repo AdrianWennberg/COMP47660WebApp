@@ -9,9 +9,9 @@ public class Student {
     private enum SEX{MALE,FEMALE}
     @Id
     @GeneratedValue
-    private String std_username;
+    private long std_ID;
     @NotBlank
-    private String std_passwrd;
+    private String std_password;
     @NotBlank
     private String std_name;
     @NotBlank
@@ -19,7 +19,7 @@ public class Student {
     @NotBlank
     private String std_address;
     @NotBlank
-    private long std_ID;
+    private String std_username;
     @NotBlank
     private String std_email;
     @NotBlank
@@ -30,7 +30,7 @@ public class Student {
     }
     public Student(String username,String password,String name,String surname,String address,long ID,String email,char sex){
         std_username=username;
-        std_passwrd=password;
+        std_password=password;
         std_name=name;
         std_surname=surname;
         std_address=address;
@@ -67,12 +67,12 @@ public class Student {
         this.std_sex = std_sex;
     }
 
-    public String getStd_passwrd() {
-        return std_passwrd;
+    public String getStd_password() {
+        return std_password;
     }
 
-    public void setStd_passwrd(String std_passwrd) {
-        this.std_passwrd = std_passwrd;
+    public void setStd_password(String std_passwrd) {
+        this.std_password = std_passwrd;
     }
 
     public String getStd_name() {
