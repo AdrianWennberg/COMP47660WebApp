@@ -1,15 +1,23 @@
 package com.ed.webapp.model;
 
-import javax.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name ="staff")
+@Table(name = "staff")
 public class Staff {
-    private enum SEX{MALE,FEMALE};
+    public enum SEX {MALE, FEMALE}
+
     @Id
-    @GeneratedValue
-    private String stf_username;
+    @GeneratedValue(generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private long stf_ID;
     @NotBlank
     private String stf_password;
     @NotBlank
@@ -17,26 +25,30 @@ public class Staff {
     @NotBlank
     private String stf_surname;
     @NotBlank
-    private long stf_ID;
-    @NotBlank
+    private String stf_username;
+    @NotNull
     private SEX stf_sex;
 
-    public Staff(){
+    public Staff() {
         super();
     }
-    public Staff(String username,String password,String name,String surname,long ID,char s){
-        stf_username=username;
-        stf_password=password;
-        stf_name=name;
-        stf_surname=surname;
-        stf_ID=ID;
-        if(s=='m' || s=='M')
-            stf_sex=SEX.MALE;
-        else if(s=='f'||s=='F')
-            stf_sex=SEX.FEMALE;
-        else
+
+    public Staff(String username, String password, String name, String surname, char s) {
+        stf_username = username;
+        stf_password = password;
+        stf_name = name;
+        stf_surname = surname;
+        if (s == 'm' || s == 'M') {
+            stf_sex = SEX.MALE;
+        }
+        else if (s == 'f' || s == 'F') {
+            stf_sex = SEX.FEMALE;
+        }
+        else {
             throw new IllegalArgumentException();
+        }
     }
+
     public String getStf_username() {
         return stf_username;
     }
@@ -81,7 +93,8 @@ public class Staff {
         return stf_ID;
     }
 
-    public void setStf_ID(long stf_ID) {
-        this.stf_ID = stf_ID;
+    @Override
+    public String toString() {
+        return "Staff{" + "stf_ID=" + stf_ID + ", stf_password='" + stf_password + '\'' + ", stf_name='" + stf_name + '\'' + ", stf_surname='" + stf_surname + '\'' + ", stf_username='" + stf_username + '\'' + ", stf_sex=" + stf_sex + '}';
     }
 }
