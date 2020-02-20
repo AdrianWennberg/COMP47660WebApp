@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name="students")
+@Table(name="student")
 public class Student {
     private enum SEX{MALE,FEMALE}
     @Id
