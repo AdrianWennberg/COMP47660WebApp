@@ -15,6 +15,7 @@ public class Module {
     private String mdl_topic;
     @NotBlank
     @ManyToOne
+    @JoinColumn(name = "stf_id")
     private Staff mdl_coordinator;
     @NotBlank
     private int mdl_MAXSTD;
