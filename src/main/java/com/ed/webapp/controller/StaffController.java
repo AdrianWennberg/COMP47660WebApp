@@ -36,6 +36,14 @@ public class StaffController {
         return new ModelAndView("staff/login", model);
     }
 
+    @GetMapping("/staff/profile")
+    public ModelAndView profilePage(ModelMap model, HttpSession session) {
+        if (session.getAttribute("staff_user") == null) {
+            return new ModelAndView(new RedirectView("/staff/login"));
+        }
+        return new ModelAndView("staff/profile", model);
+    }
+
     @PostMapping("/staff/login")
     public ModelAndView login(ModelMap model, HttpSession session, @ModelAttribute Staff staff) {
         List<Staff> found = repository.findByUsername(staff.getStf_username());
@@ -44,7 +52,7 @@ public class StaffController {
             if (user.checkPassword(staff.getStf_password())) {
                 session.setAttribute("staff_user", user);
                 if (session.getAttribute("staff_user") != null) {
-                    return new ModelAndView(new RedirectView("/"));
+                    return new ModelAndView(new RedirectView("/staff/profile"));
                 }
             }
         }
