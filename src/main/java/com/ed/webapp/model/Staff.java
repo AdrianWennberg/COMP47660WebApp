@@ -2,12 +2,10 @@ package com.ed.webapp.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @Table(name = "staff")
@@ -25,6 +23,7 @@ public class Staff {
     @NotBlank
     private String stf_surname;
     @NotBlank
+    @Column(unique = true)
     private String stf_username;
     @NotNull
     private SEX stf_sex;
@@ -49,52 +48,73 @@ public class Staff {
         }
     }
 
-    public String getStf_username() {
+    public String getUsername() {
         return stf_username;
     }
 
-    public void setStf_username(String stf_username) {
+    public void setUsername(String stf_username) {
         this.stf_username = stf_username;
     }
 
-    public String getStf_surname() {
+    public String getSurname() {
         return stf_surname;
     }
 
-    public void setStf_surname(String stf_surname) {
+    public void setSurname(String stf_surname) {
         this.stf_surname = stf_surname;
     }
 
-    public SEX getStf_sex() {
+    public SEX getSx() {
         return stf_sex;
     }
 
-    public void setStf_sex(SEX stf_sex) {
+    public void setSex(SEX stf_sex) {
         this.stf_sex = stf_sex;
     }
 
-    public String getStf_password() {
+    public String getPassword() {
         return stf_password;
     }
 
-    public void setStf_password(String stf_password) {
+    public void setPassword(String stf_password) {
         this.stf_password = stf_password;
     }
 
-    public String getStf_name() {
+    public boolean checkPassword(String password) {
+        return stf_password.equals(password);
+    }
+
+    public String getName() {
         return stf_name;
     }
 
-    public void setStf_name(String stf_name) {
+    public void setName(String stf_name) {
         this.stf_name = stf_name;
     }
 
-    public long getStf_ID() {
+    public long getID() {
         return stf_ID;
     }
 
     @Override
     public String toString() {
         return "Staff{" + "stf_ID=" + stf_ID + ", stf_password='" + stf_password + '\'' + ", stf_name='" + stf_name + '\'' + ", stf_surname='" + stf_surname + '\'' + ", stf_username='" + stf_username + '\'' + ", stf_sex=" + stf_sex + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Staff staff = (Staff) o;
+        return stf_ID == staff.stf_ID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(stf_ID);
     }
 }
