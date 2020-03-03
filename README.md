@@ -8,5 +8,6 @@ with the name and credentials stored in [src/main/resources/application.properti
 Remember to give it all privileges on the database! See here for a tutorial [https://linuxize.com/post/how-to-create-mysql-user-accounts-and-grant-privileges/]
 
 The current setting is:  
-MySQL Username: ed
-MySQL password: pass
+MySQL Username: ed  
+MySQL Password: pass  
+MySQL Database: ed_db

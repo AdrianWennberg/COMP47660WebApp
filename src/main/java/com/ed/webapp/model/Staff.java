@@ -2,12 +2,10 @@ package com.ed.webapp.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @Table(name = "staff")
@@ -25,6 +23,7 @@ public class Staff {
     @NotBlank
     private String stf_surname;
     @NotBlank
+    @Column(unique = true)
     private String stf_username;
     @NotNull
     private SEX stf_sex;
@@ -81,6 +80,10 @@ public class Staff {
         this.stf_password = stf_password;
     }
 
+    public boolean checkPassword(String password) {
+        return stf_password.equals(password);
+    }
+
     public String getStf_name() {
         return stf_name;
     }
@@ -93,8 +96,29 @@ public class Staff {
         return stf_ID;
     }
 
+    public void setStf_ID(long stf_ID) {
+        this.stf_ID = stf_ID;
+    }
+
     @Override
     public String toString() {
         return "Staff{" + "stf_ID=" + stf_ID + ", stf_password='" + stf_password + '\'' + ", stf_name='" + stf_name + '\'' + ", stf_surname='" + stf_surname + '\'' + ", stf_username='" + stf_username + '\'' + ", stf_sex=" + stf_sex + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Staff staff = (Staff) o;
+        return stf_ID == staff.stf_ID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(stf_ID);
     }
 }
