@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark" th:replace="navbar.html :: header"><span
+        class="navbar-text">Navbar Placeholder</span>
+</nav>
+<div class="container my-3">
+    <div class="row">
+        <div class="col-6" th:object="${session.student_user}">
+            <h1>
+                <span th:text="*{getStd_username()}"></span>'s Profile
+            </h1>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <span class="font-weight-bold">First Name:</span>
+                    <span th:text="*{getStd_name()}"></span>
+                </li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">Surname:</span>
+                    <span th:text="*{getStd_name()}"></span>
+                </li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">Gender:</span>
+                    <span th:text="${#strings.toLowerCase(session.staff_user.getStf_sex())}"></span>
+                </li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">Adress:</span>
+                    <span th:text="*{getStd_address()}"></span>
+                </li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">email:</span>
+                    <span th:text="*{getStd_email()}"></span>
+                </li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">StudentID:</span>
+                    <span th:text="*{getStd_ID()}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
