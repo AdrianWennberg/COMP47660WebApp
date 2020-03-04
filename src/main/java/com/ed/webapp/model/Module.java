@@ -2,6 +2,7 @@ package com.ed.webapp.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name ="module")
@@ -13,11 +14,11 @@ public class Module {
     private String mdl_name;
     @NotBlank
     private String mdl_topic;
-    @NotBlank
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "stf_id")
     private Staff mdl_coordinator;
-    @NotBlank
+    @NotNull
     private int mdl_MAXSTD;
 
     public Module(){
@@ -70,5 +71,23 @@ public class Module {
 
     public void setMdl_MAXSTD(int mdl_MAXSTD) {
         this.mdl_MAXSTD = mdl_MAXSTD;
+    }
+
+    @Override
+    public String toString() {
+        return "Module{" +
+                "mdl_ID=" +
+                mdl_ID +
+                ", mdl_name='" +
+                mdl_name +
+                '\'' +
+                ", mdl_topic='" +
+                mdl_topic +
+                '\'' +
+                ", mdl_coordinator=" +
+                mdl_coordinator +
+                ", mdl_MAXSTD=" +
+                mdl_MAXSTD +
+                '}';
     }
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Staff Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark" th:replace="navbar.html :: header"><span
+        class="navbar-text">Navbar Placeholder</span>
+</nav>
+<div class="container my-3">
+    <div class="row  justify-content-start">
+        <div class="col-6" th:object="${current_module}">
+            <h1>Edit Module</h1>
+            <form action="#" th:action="@{/module/edit/{id}(id=*{mdl_ID})}"
+                  method="post">
+
+                <div class="form-group">
+                    <label for="module_name">
+                        Module Name:
+                    </label>
+                    <input id="module_name" class="form-control" th:field="*{mdl_name}" type="text">
+                </div>
+
+                <div class="form-group">
+                    <label for="module_topic">
+                        Module Topic:
+                    </label>
+                    <input id="module_topic" class="form-control" th:field="*{mdl_topic}" type="text">
+                </div>
+
+                <div class="form-group">
+                    <label for="module_maxstd">
+                        Max number of students:
+                    </label>
+                    <input id="module_maxstd" class="form-control" th:field="*{mdl_MAXSTD}" type="number">
+                </div>
+
+                <input type="submit" value="Update"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
