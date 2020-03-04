@@ -66,7 +66,7 @@ public class StudentController {
         return new ModelAndView("student/studentlogin",model);
     }
 
-    /*
+
     @GetMapping("studentId")
     @ResponseBody
     public Student getStudentById(@PathVariable(value = "id") Long studentId) throws StudentNotFoundException {
@@ -102,7 +102,7 @@ public class StudentController {
 
         return ResponseEntity.ok().build();
     }
-   */
+
 
 
 }
