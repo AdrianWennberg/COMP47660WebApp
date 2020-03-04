@@ -2,6 +2,7 @@ package com.ed.webapp.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 @Entity
 @Table(name="student")
@@ -19,17 +20,25 @@ public class Student {
     @NotBlank
     private String std_address;
     @NotBlank
+    @Column(unique = true)
     private String std_username;
     @NotBlank
     private String std_email;
     @NotBlank
     private SEX std_sex;
 
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(std_ID);
+    }
+
     public Student(){
         super();
     }
-    public Student(String username,String password,String name,String surname,String address,long ID,String email,char sex){
-        std_username=username;
+
+    public Student(String username, String password, String name, String surname, String address, long ID, String email, char sex){
+        username =username;
         std_password=password;
         std_name=name;
         std_surname=surname;
@@ -75,6 +84,10 @@ public class Student {
         this.std_password = std_passwrd;
     }
 
+    public boolean checkPassword(String password) {
+        return std_password.equals(password);
+    }
+
     public String getStd_name() {
         return std_name;
     }
@@ -106,4 +119,27 @@ public class Student {
     public void setStd_email(String std_email) {
         this.std_email = std_email;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return std_ID == student.std_ID;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "std_ID=" + std_ID +
+                ", std_password='" + std_password + '\'' +
+                ", std_name='" + std_name + '\'' +
+                ", std_surname='" + std_surname + '\'' +
+                ", std_address='" + std_address + '\'' +
+                ", std_username='" + std_username + '\'' +
+                ", std_email='" + std_email + '\'' +
+                ", std_sex=" + std_sex +
+                '}';
+    }
+
 }
