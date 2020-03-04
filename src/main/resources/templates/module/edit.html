@@ -18,6 +18,17 @@
                   method="post">
 
                 <div class="form-group">
+                    <label for="module_coordinator">
+                        Module Coordinator:
+                    </label>
+                    <span id="module_coordinator"
+                          th:text="*{mdl_coordinator.stf_name + ' ' + mdl_coordinator.stf_surname}">John Doe</span>
+                    <label hidden>
+                        <input hidden type="number" th:field="*{mdl_coordinator.stf_ID}">
+                    </label>
+                </div>
+
+                <div class="form-group">
                     <label for="module_name">
                         Module Name:
                     </label>

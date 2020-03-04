@@ -8,8 +8,8 @@ import javax.validation.constraints.NotNull;
 @Table(name ="module")
 public class Module {
     @Id
-    @GeneratedValue
-    private long mdl_ID;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long mdl_ID;
     @NotBlank
     private String mdl_name;
     @NotBlank
@@ -25,19 +25,18 @@ public class Module {
         super();
     }
 
-    public Module(long ID, String name, String topic, Staff coordinator, int MAXSTD){
-        mdl_ID = ID;
+    public Module(String name, String topic, Staff coordinator, int MAXSTD) {
         mdl_name = name;
         mdl_topic = topic;
         mdl_coordinator = coordinator;
         mdl_MAXSTD = MAXSTD;
     }
 
-    public long getMdl_ID() {
+    public Long getMdl_ID() {
         return mdl_ID;
     }
 
-    public void setMdl_ID(long mdl_ID) {
+    public void setMdl_ID(Long mdl_ID) {
         this.mdl_ID = mdl_ID;
     }
 

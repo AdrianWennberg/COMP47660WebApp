@@ -26,7 +26,7 @@ public class StaffController {
     @GetMapping("/login")
     public ModelAndView loginPage(ModelMap model, HttpSession session) {
         if (session.getAttribute("staff_user") != null) {
-            return new ModelAndView(new RedirectView("/"));
+            return new ModelAndView(new RedirectView("/staff/profile"));
         }
         model.addAttribute("staff", new Staff());
         return new ModelAndView("/staff/login", model);

@@ -17,17 +17,16 @@ public class ModuleService {
         return repository.findByStf_ID(stf_id);
     }
 
-    public Module getModule(String id) {
-        return repository.findById(Long.parseLong(id)).orElseThrow();
+    public Module getModule(long id) {
+        return repository.findById(id).orElseThrow();
     }
 
-    public Module updateModule(String id, Module new_module) {
-        Module module = repository.findById(Long.parseLong(id)).orElse(new Module());
+    public Module updateModule(long id, Module new_module) {
+        Module module = repository.findById(id).orElse(new Module());
         module.setMdl_MAXSTD(new_module.getMdl_MAXSTD());
         module.setMdl_name(new_module.getMdl_name());
         module.setMdl_topic(new_module.getMdl_topic());
         module.setMdl_coordinator(new_module.getMdl_coordinator());
-
         return repository.save(module);
     }
 }
