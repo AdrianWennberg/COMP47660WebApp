@@ -2,9 +2,9 @@ DELETE FROM module;
 DELETE FROM staff;
 DELETE FROM student;
 
-INSERT INTO staff (stf_id, stf_password, stf_name, stf_surname, stf_username, stf_sex)
+INSERT INTO staff (stf_id, stf_username, stf_password, stf_name, stf_surname, stf_sex)
 VALUES
-    (1, 'pass', 'temp', 'John', 'Dow', 0);
+    (1, 'temp', 'pass', 'John', 'Doe', 0);
 
 INSERT INTO module (mdl_id, mdl_maxstd, mdl_name, mdl_topic, stf_id)
 VALUES
