@@ -31,6 +31,32 @@
                 </li>
             </ul>
         </div>
+        <div class="col-6" th:object="${session.staff_user}">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th> Modules</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${modules.isEmpty()}">
+                    <td colspan="3"> No Modules Available</td>
+                </tr>
+                <tr th:each="m : ${modules}">
+                    <td>
+                        <span th:text="${m.getMdl_name()}"> Name </span></td>
+                    <td><a href="/module/edit/#"
+                           th:href="@{/module/edit/{id}(id=${m.getMdl_ID()})}">
+                        edit
+                        module </a></td>
+                    <td><a href="/module/grades/#"
+                           th:href="@{/module/grades/{id}(id=${m.getMdl_ID()})}"> edit grades </a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </body>
