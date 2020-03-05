@@ -1,8 +1,11 @@
 package com.ed.webapp.controller;
 
+import com.ed.webapp.model.StudentModule;
+import com.ed.webapp.repository.StudentModuleRepository;
 import com.ed.webapp.repository.StudentRepository;
 import com.ed.webapp.exception.StudentNotFoundException;
 import com.ed.webapp.model.Student;
+import com.ed.webapp.service.StudentModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,12 +17,15 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class StudentController {
     @Autowired
     StudentRepository studentRepository;
+    StudentModuleService studentModuleService;
+
 
     @GetMapping("/student")
     @ResponseBody
@@ -29,19 +35,23 @@ public class StudentController {
     @GetMapping("/student/studentlogin")
     public ModelAndView loginPage(ModelMap model, HttpSession session){
         if(session.getAttribute("student_user")!=null){
-            return new ModelAndView(new RedirectView("/"));
+            return new ModelAndView(new RedirectView("/student/profile"));
         }
         model.addAttribute("student",new Student());
         return new ModelAndView("student/studentlogin",model);
     }
 
 
-    @GetMapping
+    @GetMapping("/student/profile")
     public ModelAndView profilePage(ModelMap model, HttpSession session){
         if(session.getAttribute("student_user")==null){
             return new ModelAndView(new RedirectView("/student/studentlogin"));
         }
-        return new ModelAndView("student/profile",model);
+        Student student=(Student) session.getAttribute("student_user");
+       //List<StudentModule>module=studentModuleService.getModulebyStudent(student);
+        //if(module==null)module=new ArrayList<>();
+        //model.addAttribute("studentModule",module);
+        return new ModelAndView("/student/profile",model);
     }
 
     @PostMapping("/student/studentlogin")
@@ -52,7 +62,7 @@ public class StudentController {
             if(user.checkPassword(student.getStd_password())){
                 session.setAttribute("student_user",user);
                 if(session.getAttribute("student_user")!=null){
-                    return new ModelAndView(new RedirectView("/student/studentprofile"));
+                    return new ModelAndView(new RedirectView("/student/profile"));
                 }
             }
         }

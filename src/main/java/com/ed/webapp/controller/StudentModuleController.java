@@ -14,9 +14,9 @@ public class StudentModuleController {
     @Autowired
     StudentModuleRepository studentModuleRepository;
 
-    @GetMapping("student/module")
-    public List<StudentModule> getModule(Student student){
-        return studentModuleRepository.findByStudent(student);
-    }
+   // @GetMapping("student/module")
+    //public List<StudentModule> getModule(Student student){
+        //return studentModuleRepository.findByStudent(student);
+    //}
 
 }

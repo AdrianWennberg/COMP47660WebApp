@@ -26,8 +26,12 @@
                     <span th:text="*{getStd_name()}"></span>
                 </li>
                 <li class="list-group-item">
+                    <span class="font-weight-bold">nationality:</span>
+                    <span th:text="*{getStd_nationality()}"></span>
+                </li>
+                <li class="list-group-item">
                     <span class="font-weight-bold">Gender:</span>
-                    <span th:text="${#strings.toLowerCase(session.staff_user.getStf_sex())}"></span>
+                    <span th:text="${#strings.toLowerCase(session.student_user.getStd_sex())}"></span>
                 </li>
                 <li class="list-group-item">
                     <span class="font-weight-bold">Adress:</span>
@@ -42,6 +46,17 @@
                     <span th:text="*{getStd_ID()}"></span>
                 </li>
             </ul>
+        </div>
+        <div class="column">
+            <div>
+                <h2>Module Search</h2>
+                <label>
+                    <input type="text" class="form-control" placeholder="Insert topic"/>
+                </label>
+            </div>
+            <div>
+                <h3>My Modules</h3>
+            </div>
         </div>
     </div>
 </div>

@@ -24,8 +24,6 @@ public class Student {
     private String std_username;
     @NotBlank
     private String std_email;
-
-
     @NotBlank
     private String std_nationality;
     @NotBlank
