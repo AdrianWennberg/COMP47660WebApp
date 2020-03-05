@@ -17,9 +17,28 @@ VALUES
     (11, 'RHobbs','XOQ14HEO3CK','Reed','Hobbs',0);
 
 
-INSERT INTO module (mdl_id, mdl_maxstd, mdl_name, mdl_topic, stf_id)
-VALUES
-    (1, 15, 'Temp Module', 'Science', 1);
+insert into module (mdl_id, mdl_maxstd, mdl_name, mdl_topic, stf_id) values
+(1, 25, 'Major Pharmaceuticals', 'Health Care', 11),
+(2, 42, 'Farming/Seeds/Milling', 'Consumer Non-Durables', 9),
+(3, 26, 'Military/Government/Technical', 'Consumer Services', 6),
+(4, 18, 'Apparel', 'Consumer Non-Durables', 3),
+(5, 21, 'Real Estate Investment Trusts', 'Consumer Services', 11),
+(6, 38, 'Medical Specialities', 'Health Care', 5),
+(7, 43, 'Other Consumer Services', 'Consumer Services', 3),
+(8, 49, 'Property-Casualty Insurers', 'Finance', 10),
+(9, 16, 'EDP Services', 'Technology', 2),
+(10, 45, 'Ordnance And Accessories', 'Capital Goods', 10),
+(11, 20, 'Publishing', 'Consumer Durables', 5),
+(12, 31, 'Services-Misc. Amusement & Recreation', 'Consumer Services', 5),
+(13, 16, 'Automotive Aftermarket', 'Consumer Durables', 8),
+(14, 28, 'Fluid Controls', 'Capital Goods', 11),
+(15, 27, 'Natural Gas Distribution', 'Energy', 5),
+(16, 47, 'Homebuilding', 'Capital Goods', 3),
+(17, 29, 'Meat/Poultry/Fish', 'Consumer Non-Durables', 10),
+(18, 33, 'Computer Software: Prepackaged Software', 'Technology', 7),
+(19, 18, 'Agricultural Chemicals', 'Basic Industries', 9),
+(20, 47, 'Oil & Gas Production', 'Energy', 10),
+(21, 49, 'Telecommunications Equipment', 'Consumer Non-Durables', 11);
 
 INSERT INTO student (std_username, std_id, std_address, std_email, std_name, std_password , std_sex, std_surname)
 VALUES
