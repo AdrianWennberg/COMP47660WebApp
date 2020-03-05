@@ -24,6 +24,10 @@ public class Student {
     private String std_username;
     @NotBlank
     private String std_email;
+
+
+    @NotBlank
+    private String std_nationality;
     @NotBlank
     private SEX std_sex;
 
@@ -37,14 +41,16 @@ public class Student {
         super();
     }
 
-    public Student(String username, String password, String name, String surname, String address, long ID, String email, char sex){
-        username =username;
+    public Student(String username, String password, String name, String surname, String address, long ID, String email, char sex,String nationality){
+        this.std_nationality = std_nationality;
+        std_username =username;
         std_password=password;
         std_name=name;
         std_surname=surname;
         std_address=address;
         std_ID=ID;
         std_email=email;
+        std_nationality=nationality;
         if(sex=='m' || sex == 'M')
             std_sex=SEX.MALE;
         else if (sex=='f' || sex=='F')
@@ -119,6 +125,11 @@ public class Student {
     public void setStd_email(String std_email) {
         this.std_email = std_email;
     }
+
+    public String getStd_nationality() {return std_nationality; }
+
+    public void setStd_nationality(String std_nationality) {this.std_nationality = std_nationality; }
+
 
     @Override
     public boolean equals(Object o) {

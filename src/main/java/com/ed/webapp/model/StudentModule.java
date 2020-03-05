@@ -23,16 +23,22 @@ public class StudentModule implements Serializable {
     @NotBlank
     private Year stmd_year;
 
+    @NotBlank
+    private int stmd_semester;
+
     private double grade;
 
     public StudentModule(){
         super();
     }
 
-    public StudentModule(Student student, Module module, Year year){
+
+
+    public StudentModule(Student student, Module module, Year year, int semester){
         stmd_student = student;
         stmd_module = module;
         stmd_year = year;
+        stmd_semester=semester;
     }
 
     public Student getStmd_student() {
@@ -58,6 +64,10 @@ public class StudentModule implements Serializable {
     public void setStmd_year(Year stmd_year) {
         this.stmd_year = stmd_year;
     }
+
+    public int getStmd_semester() {return stmd_semester;    }
+
+    public void setStmd_semester(int stmd_semester) {this.stmd_semester = stmd_semester; }
 
     public double getGrade() {
         return grade;
