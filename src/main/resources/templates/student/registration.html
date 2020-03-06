@@ -15,7 +15,7 @@
 
         <div class="col-6" th:object="${current_student}">
             <h1>Student Registration</h1>
-            <form action="#" th:action="@{/student/registration/{id}(id=*{std_ID})}" method="post">
+            <form action="#" th:action="@{/student/registration}" method="post">
                 <div class="form-group">
                     <label for ="student_name">
                     Name:

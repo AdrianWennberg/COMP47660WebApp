@@ -12,4 +12,9 @@ public interface ModuleRepository extends JpaRepository<Module, Long> {
 
     @Query(value = "SELECT * from module where stf_id = ?1", nativeQuery = true)
     List<Module> findByStf_ID(long id);
+
+    @Query(value = "SELECT * from module where mdl_topic = ?1", nativeQuery = true)
+    List<Module> findByTopic(String topic);
+
+
 }

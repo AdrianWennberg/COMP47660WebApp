@@ -6,6 +6,7 @@ import com.ed.webapp.repository.StudentModuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -14,9 +15,9 @@ public class StudentModuleController {
     @Autowired
     StudentModuleRepository studentModuleRepository;
 
-   // @GetMapping("student/module")
-    //public List<StudentModule> getModule(Student student){
-        //return studentModuleRepository.findByStudent(student);
-    //}
+   @GetMapping("/studentmodule")
+   @ResponseBody
+   public List<StudentModule> getStudent(){return studentModuleRepository.findAll();}
+
 
 }
