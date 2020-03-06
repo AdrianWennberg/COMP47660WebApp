@@ -27,7 +27,10 @@ public class StudentController {
 
     @GetMapping("/student")
     @ResponseBody
-    public List<Student> getStudent(){return studentService.getAllStudents();}
+    public List<Student> getStudent() {
+        System.out.println(studentService.getAllStudents());
+        return studentService.getAllStudents();
+    }
 
 
     @GetMapping("/student/studentlogin")
@@ -88,8 +91,7 @@ public class StudentController {
         return new ModelAndView("student/studentlogin",model);
     }
 
-
-    @GetMapping("studentId")
+    @GetMapping("studentId/{id}")
     @ResponseBody
     public Student getStudentById(@PathVariable(value = "id") Long studentId) throws StudentNotFoundException {
         return studentRepository.findById(studentId).orElseThrow(() -> new StudentNotFoundException(studentId));

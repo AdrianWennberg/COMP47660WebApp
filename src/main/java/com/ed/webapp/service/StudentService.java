@@ -12,10 +12,17 @@ public class StudentService {
 
     @Autowired
     StudentRepository repository;
-    public List<Student>getAllStudents(){return repository.findAll();}
-    public List<Student> getStudentByUsername(String username){return repository.findByUsername(username);}
-    public Student createStudent(Student new_student){
+
+    public List<Student> getAllStudents() {return repository.findAll();}
+
+    public List<Student> getStudentByUsername(String username) {return repository.findByUsername(username);}
+
+    public Student createStudent(Student new_student) {
         System.out.println(new_student);
         return repository.save(new_student);
+    }
+
+    public long getStudentCount() {
+        return repository.count();
     }
 }

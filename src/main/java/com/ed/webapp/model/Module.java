@@ -83,6 +83,16 @@ public class Module {
         return students;
     }
 
+    public List<StudentModule> getCurrentStudents() {
+        List<StudentModule> currentStudents = new LinkedList<>();
+        for (StudentModule student : students) {
+            if (student.getStmd_year() == 2020) {
+                currentStudents.add(student);
+            }
+        }
+        return currentStudents;
+    }
+
     public void setStudents(List<StudentModule> students) {
         this.students = students;
     }

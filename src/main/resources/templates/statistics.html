@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Title</title>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src="/js/statistics.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark" th:replace="navbar.html :: header"><span
+        class="navbar-text">Navbar Placeholder</span>
+</nav>
+
+<div class="container my-3">
+    <div class="row">
+
+        <div class="col">
+            <h1>School Statistics</h1>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-6">
+            <span>Number of modules: </span>
+            <span th:text="${module_count}">22</span>
+        </div>
+        <div class="col-6">
+            <span>Number of staff members: </span>
+            <span th:text="${staff_count}">52</span>
+        </div>
+        <div class="col-6">
+            <span>Number of students members: </span>
+            <span th:text="${student_count}">123</span></div>
+
+
+    </div>
+    <div class="row">
+
+        <div class="col-6">
+            <span>Student Gender distribution:</span>
+            <div id="student-gender">
+            </div>
+
+
+        </div>
+
+        <div class="col-6">
+            <span>Student Nationality distribution:</span>
+            <div id="student-nationality"></div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

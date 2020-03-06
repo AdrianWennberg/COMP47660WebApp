@@ -27,4 +27,8 @@ public class ModuleService {
         module.setMdl_coordinator(new_module.getMdl_coordinator());
         return repository.save(module);
     }
+
+    public long getModuleCount() {
+        return repository.count();
+    }
 }

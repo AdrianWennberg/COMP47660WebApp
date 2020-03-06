@@ -47,6 +47,12 @@ public class ModuleController {
         return new ModelAndView("/module/edit", model);
     }
 
+    @GetMapping({"/info/{id}"})
+    public ModelAndView infoPage(ModelMap model, @PathVariable String id) {
+        model.addAttribute("current_module", moduleService.getModule(Long.parseLong(id)));
+        return new ModelAndView("/module/info", model);
+    }
+
     @GetMapping("/edit/{id}")
     public ModelAndView editModulePage(ModelMap model, @PathVariable String id) {
         model.addAttribute("current_module", moduleService.getModule(Long.parseLong(id)));
