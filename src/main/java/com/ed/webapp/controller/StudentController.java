@@ -1,25 +1,20 @@
 package com.ed.webapp.controller;
 
-import com.ed.webapp.model.StudentModule;
-import com.ed.webapp.repository.StudentModuleRepository;
-import com.ed.webapp.repository.StudentRepository;
 import com.ed.webapp.exception.StudentNotFoundException;
 import com.ed.webapp.model.Student;
+import com.ed.webapp.repository.StudentRepository;
 import com.ed.webapp.service.StudentModuleService;
 import com.ed.webapp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,6 +22,7 @@ public class StudentController {
     @Autowired
     StudentRepository studentRepository;
     StudentModuleService studentModuleService;
+    @Autowired
     StudentService studentService;
 
     @GetMapping("/student")

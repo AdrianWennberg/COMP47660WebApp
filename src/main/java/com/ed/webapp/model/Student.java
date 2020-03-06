@@ -1,16 +1,21 @@
 package com.ed.webapp.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
-@Table(name="student")
+@Table(name = "student")
 public class Student {
-    private enum SEX{MALE,FEMALE}
+    public enum SEX {MALE, FEMALE}
+
     @Id
-    @GeneratedValue
-    private long std_ID;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long std_ID;
     @NotBlank
     private String std_password;
     @NotBlank
@@ -26,7 +31,7 @@ public class Student {
     private String std_email;
     @NotBlank
     private String std_nationality;
-    @NotBlank
+    @NotNull
     private SEX std_sex;
 
 
@@ -100,11 +105,11 @@ public class Student {
         this.std_name = std_name;
     }
 
-    public long getStd_ID() {
+    public Long getStd_ID() {
         return std_ID;
     }
 
-    public void setStd_ID(long std_ID) {
+    public void setStd_ID(Long std_ID) {
         this.std_ID = std_ID;
     }
 
