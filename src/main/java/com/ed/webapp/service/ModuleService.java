@@ -13,10 +13,6 @@ public class ModuleService {
     @Autowired
     ModuleRepository repository;
 
-    public List<Module> getModulesForStaff(long stf_id) {
-        return repository.findByStf_ID(stf_id);
-    }
-
     public List<Module> getModuleByTopic(String topic){return repository.findByTopic(topic);}
 
     public Module getModule(long id) {

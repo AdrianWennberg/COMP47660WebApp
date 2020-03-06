@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -27,6 +28,9 @@ public class Staff {
     private String stf_username;
     @NotNull
     private SEX stf_sex;
+
+    @OneToMany(mappedBy = "mdl_coordinator", fetch = FetchType.EAGER)
+    List<Module> modules;
 
     public Staff() {
         super();
@@ -100,9 +104,30 @@ public class Staff {
         this.stf_ID = stf_ID;
     }
 
+    public List<Module> getModules() {
+        return modules;
+    }
+
     @Override
     public String toString() {
-        return "Staff{" + "stf_ID=" + stf_ID + ", stf_password='" + stf_password + '\'' + ", stf_name='" + stf_name + '\'' + ", stf_surname='" + stf_surname + '\'' + ", stf_username='" + stf_username + '\'' + ", stf_sex=" + stf_sex + '}';
+        return "Staff{" +
+                "stf_ID=" +
+                stf_ID +
+                ", stf_password='" +
+                stf_password +
+                '\'' +
+                ", stf_name='" +
+                stf_name +
+                '\'' +
+                ", stf_surname='" +
+                stf_surname +
+                '\'' +
+                ", stf_username='" +
+                stf_username +
+                '\'' +
+                ", stf_sex=" +
+                stf_sex +
+                '}';
     }
 
     @Override

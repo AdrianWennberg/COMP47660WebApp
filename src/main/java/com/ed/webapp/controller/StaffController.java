@@ -1,7 +1,6 @@
 package com.ed.webapp.controller;
 
 import com.ed.webapp.model.Staff;
-import com.ed.webapp.service.ModuleService;
 import com.ed.webapp.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,9 +19,6 @@ public class StaffController {
     @Autowired
     StaffService staffService;
 
-    @Autowired
-    ModuleService moduleService;
-
     @GetMapping("/login")
     public ModelAndView loginPage(ModelMap model, HttpSession session) {
         if (session.getAttribute("staff_user") != null) {
@@ -38,7 +34,7 @@ public class StaffController {
         if (user == null) {
             return new ModelAndView(new RedirectView("/staff/login"));
         }
-        model.addAttribute("modules", moduleService.getModulesForStaff(user.getStf_ID()));
+        model.addAttribute("modules", user.getModules());
         return new ModelAndView("/staff/profile", model);
     }
 
