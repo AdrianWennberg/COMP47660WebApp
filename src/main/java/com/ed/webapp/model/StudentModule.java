@@ -12,12 +12,12 @@ import java.time.Year;
 public class StudentModule implements Serializable {
     @Id
     @ManyToOne
-    @PrimaryKeyJoinColumn
+    @PrimaryKeyJoinColumn(name = "std_id")
     private Student stmd_student;
 
     @Id
     @ManyToOne
-    @PrimaryKeyJoinColumn
+    @PrimaryKeyJoinColumn(name="mdl_id")
     private Module stmd_module;
 
     @NotBlank
