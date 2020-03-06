@@ -146,7 +146,7 @@ insert into student (std_id, std_name, std_surname, std_email, std_sex, std_addr
 
 
 
-insert into studentmodule (stmd_student_std_id, stmd_module_mdl_id, stmd_year, grade, stmd_semester) values
+insert into studentmodule (stmd_student_id, stmd_module_id, stmd_year, grade, stmd_semester) values
 (18, 4, 2020, 0, 1),
 (27, 1, 2020, 0, 2),
 (54, 15, 2020, 0, 1),

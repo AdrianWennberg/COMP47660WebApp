@@ -7,17 +7,20 @@ import java.time.Year;
 
 
 @Entity
-@IdClass(StudentModuleID.class)
-@Table(name ="studentmodule")
+@Table(name = "studentmodule")
 public class StudentModule implements Serializable {
-    @Id
+
+    @EmbeddedId
+    StudentModuleID id;
+
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "std_id")
+    @MapsId("stmd_student_id")
+    @JoinColumn(name = "stmd_student_id")
     private Student stmd_student;
 
-    @Id
     @ManyToOne
-    @PrimaryKeyJoinColumn(name="mdl_id")
+    @MapsId("stmd_module_id")
+    @JoinColumn(name = "stmd_module_id")
     private Module stmd_module;
 
     @NotBlank
