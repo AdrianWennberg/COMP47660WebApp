@@ -1,0 +1,22 @@
+Group leader: Adrian Wennberg
+Group members: Nicolas Gallo, Christian Morales Guerro
+
+Things done:
+    Christian Morales Guerro
+    Nicolas Gallo
+        Created initial SQL tables and model classes
+        Created the student login, registration, and profile
+        Worked on Module searching, bud did not complete this
+
+    Adrian Wennberg
+        Created the staff login and profile
+        Created staff pages for editing modules and grades
+        Created school statistics page
+
+
+We did not finish more by now. With a bit more time, we could add the last functionalities.
+
+
+
+
+
