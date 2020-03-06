@@ -9,6 +9,7 @@ import com.ed.webapp.service.StudentModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -48,12 +49,20 @@ public class StudentController {
             return new ModelAndView(new RedirectView("/student/studentlogin"));
         }
         Student student=(Student) session.getAttribute("student_user");
-       //List<StudentModule>module=studentModuleService.getModulebyStudent(student);
-        //if(module==null)module=new ArrayList<>();
-        //model.addAttribute("studentModule",module);
+        model.addAttribute("studentModules",studentModuleService.getModulebyStudent(student.getStd_ID()));
         return new ModelAndView("/student/profile",model);
     }
 
+    @GetMapping("/student/registration")
+    public ModelAndView registrationPage(Model model, HttpSession session){
+        Student student=new Student();
+        model.addAttribute("current_student",student);
+        return new ModelAndView("/student/registration");
+    }
+/*
+    @PostMapping("/student/registration")
+    public RedirectView
+*/
     @PostMapping("/student/studentlogin")
     public ModelAndView login(ModelMap model, HttpSession session, @ModelAttribute Student student){
         List<Student>found = studentRepository.findByUsername(student.getStd_username());

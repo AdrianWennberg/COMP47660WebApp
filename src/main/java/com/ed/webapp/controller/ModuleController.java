@@ -12,12 +12,24 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/module")
 public class ModuleController {
     @Autowired
     ModuleService moduleService;
+
+    @GetMapping("/module/{topic}")
+    public ModelAndView moduleList(ModelMap model,@PathVariable String topic){
+       List<Module> moduleList= moduleService.getModuleByTopic(topic);
+       if(moduleList.isEmpty()){
+           model.addAttribute("module error","no modules finded");
+           return new ModelAndView(new RedirectView("/student/profile"));
+       }
+       model.addAttribute("modules",moduleList);
+        return new ModelAndView("/module/{topic}",model);
+    }
 
     @GetMapping({"/edit/", "/edit"})
     public ModelAndView newModulePage(ModelMap model, HttpSession session) {

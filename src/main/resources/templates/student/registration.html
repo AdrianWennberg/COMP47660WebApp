@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark" th:replace="navbar.html :: header"><span
+        class="navbar-text">Navbar Placeholder</span>
+</nav>
+<div class="'container my-3">
+    <div class="row justify-content-start">
+
+        <div class="col-6" th:object="${current_student}">
+            <h1>Student Registration</h1>
+            <form action="#" th:action="@{/student/registration/{id}(id=*{std_ID})}" method="post">
+                <div class="form-group">
+                    <label for ="student_name">
+                    Name:
+                    </label>
+                    <input id="student_name" class="form-control" th:field="*{std_name}" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="student_surname">
+                        Surname:
+                        <input id="student_surname" class="form-control" th:field="*{std_surname}" type="text">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="student_username">
+                        Username:
+                        <input id="student_username" class="form-control" th:field="*{std_username}" type="text">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="student_password">
+                        Password:
+                        <input id="student_password" class="form-control" th:field="*{std_password}" type="text">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="student_sex">
+                        Sex:
+                        <input id="student_sex" class="form-control" th:field="*{std_sex}" type="text">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="student_nationality">
+                        Nationality:
+                        <input id="student_nationality" class="form-control" th:field="*{std_nationality}" type="text">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="student_address">
+                        Address:
+                        <input id="student_address" class="form-control" th:field="*{std_address}" type="text">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="student_email">
+                        Email:
+                        <input id="student_email" class="form-control" th:field="*{std_nationality}" type="text">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="student_nationality">
+                        Student ID:
+                        <input id="student_id" class="form-control" th:field="*{std_ID}" type="text">
+                    </label>
+                </div>
+                <input type="submit" value="Update"/>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
