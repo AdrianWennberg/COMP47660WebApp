@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class LogoutController {
-    @GetMapping("logout")
+    @GetMapping("/logout")
     public RedirectView logout(HttpSession session) {
         session.removeAttribute("staff_user");
         session.removeAttribute("student_user");

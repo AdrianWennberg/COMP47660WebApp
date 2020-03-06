@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark" th:replace="navbar.html :: header"><span
+        class="navbar-text">Navbar Placeholder</span>
+</nav>
+<div class="container my-3">
+    <div class="row">
+        <div class="col-6" th:object="${session.student_user}">
+            <h1>
+                <span th:text="*{getStd_name()}">JDoe</span>'s Fees
+            </h1>
+
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <label>Current Fees:</label>
+                    <span th:text="${current_fees.getFee_amount()}"></span>
+
+                    <a th:if="${!current_fees.isPaid()}" th:href="@{/student/pay/{id}(id=*{getStd_ID()})}">Pay Fees</a>
+                    <span th:if="${current_fees.isPaid()}">Fees paid</span>
+                </li>
+                <li th:each="f : ${previous_fees}" class="list-group-item">
+                    <label th:text="${f.getFee_year()} + ':'"></label>
+                    <span th:text="${f.getFee_amount()}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,9 +1,8 @@
 package com.ed.webapp.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.Year;
 
 @Entity
 @IdClass(FeesID.class)
@@ -11,21 +10,32 @@ import java.time.Year;
 public class Fees implements Serializable {
     @Id
     @ManyToOne
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "fee_student_std_id")
     private Student fee_student;
 
     @Id
     @GeneratedValue
     private int fee_year;
 
-    @NotBlank
+    @NotNull
     private double fee_amount;
 
-    public Fees(){
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    @NotNull
+    private boolean paid;
+
+    public Fees() {
         super();
     }
 
-    public Fees(Student student, int year, double amount){
+    public Fees(Student student, int year, double amount) {
         fee_student = student;
         fee_year = year;
         fee_amount = amount;

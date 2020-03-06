@@ -1,7 +1,9 @@
 package com.ed.webapp.controller;
 
 import com.ed.webapp.exception.StudentNotFoundException;
+import com.ed.webapp.model.Fees;
 import com.ed.webapp.model.Student;
+import com.ed.webapp.repository.FeesRepository;
 import com.ed.webapp.repository.StudentRepository;
 import com.ed.webapp.service.StudentModuleService;
 import com.ed.webapp.service.StudentService;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -24,22 +27,22 @@ public class StudentController {
     StudentModuleService studentModuleService;
     @Autowired
     StudentService studentService;
+    @Autowired
+    FeesRepository feeRepository;
 
     @GetMapping("/student")
     @ResponseBody
     public List<Student> getStudent() {
-        System.out.println(studentService.getAllStudents());
         return studentService.getAllStudents();
     }
 
-
     @GetMapping("/student/studentlogin")
-    public ModelAndView loginPage(ModelMap model, HttpSession session){
-        if(session.getAttribute("student_user")!=null){
+    public ModelAndView loginPage(ModelMap model, HttpSession session) {
+        if (session.getAttribute("student_user") != null) {
             return new ModelAndView(new RedirectView("/student/profile"));
         }
-        model.addAttribute("student",new Student());
-        return new ModelAndView("student/studentlogin",model);
+        model.addAttribute("student", new Student());
+        return new ModelAndView("student/studentlogin", model);
     }
 
 
@@ -117,6 +120,7 @@ public class StudentController {
 
         return studentRepository.save(student);
     }
+
     @DeleteMapping("/students/{id}")
     @ResponseBody
     public ResponseEntity<?> deleteBook(@PathVariable(value = "id") Long bookId) throws StudentNotFoundException {
@@ -127,6 +131,35 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/student/fees")
+    public ModelAndView studentFeesPage(ModelMap model, HttpSession session) {
+        Student user = (Student) session.getAttribute("student_user");
+        if (session.getAttribute("student_user") == null) {
+            return new ModelAndView(new RedirectView("/student/studentlogin"));
+        }
+        List<Fees> previousFees = new LinkedList<>();
+        for (Fees fee : feeRepository.findByFee_student(user)) {
+            if (fee.getFee_year() != 2020) {
+                previousFees.add(fee);
+            }
+            else {
+                model.addAttribute("current_fees", fee);
+            }
+        }
+        model.addAttribute("previous_fees", previousFees);
+        return new ModelAndView("/student/fees", model);
+    }
 
-
+    @GetMapping("/student/pay/{id}")
+    public RedirectView payFees(ModelMap model, @PathVariable String id) {
+        Student user = studentRepository.findById(Long.parseLong(id)).orElseThrow();
+        for (Fees fee : feeRepository.findByFee_student(user)) {
+            if (fee.getFee_year() == 2020) {
+                fee.setPaid(true);
+                fee.setFee_student(user);
+                feeRepository.save(fee);
+            }
+        }
+        return new RedirectView("/student/fees");
+    }
 }

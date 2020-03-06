@@ -10,6 +10,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "student")
 public class Student {
+
     public enum SEX {MALE, FEMALE}
 
     @Id
@@ -34,31 +35,34 @@ public class Student {
     @NotNull
     private SEX std_sex;
 
-
     @Override
     public int hashCode() {
         return Objects.hash(std_ID);
     }
 
-    public Student(){
+    public Student() {
         super();
     }
 
-    public Student(String username, String password, String name, String surname, String address, long ID, String email, char sex,String nationality){
-        this.std_nationality = std_nationality;
-        std_username =username;
-        std_password=password;
-        std_name=name;
-        std_surname=surname;
-        std_address=address;
-        std_ID=ID;
-        std_email=email;
-        std_nationality=nationality;
-        if(sex=='m' || sex == 'M')
-            std_sex=SEX.MALE;
-        else if (sex=='f' || sex=='F')
-            std_sex=SEX.FEMALE;
-        else throw new IllegalArgumentException();
+    public Student(String username, String password, String name, String surname, String address, long ID, String email, char sex, String nationality) {
+        std_nationality = nationality;
+        std_username = username;
+        std_password = password;
+        std_name = name;
+        std_surname = surname;
+        std_address = address;
+        std_ID = ID;
+        std_email = email;
+        std_nationality = nationality;
+        if (sex == 'm' || sex == 'M') {
+            std_sex = SEX.MALE;
+        }
+        else if (sex == 'f' || sex == 'F') {
+            std_sex = SEX.FEMALE;
+        }
+        else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public String getStd_username() {
@@ -136,10 +140,14 @@ public class Student {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Student student = (Student) o;
-        return std_ID == student.std_ID;
+        return std_ID.equals(student.std_ID);
     }
 
     @Override
