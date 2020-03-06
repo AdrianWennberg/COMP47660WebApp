@@ -1,14 +1,11 @@
 package com.ed.webapp.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
-import java.time.Year;
-
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "studentmodule")
-public class StudentModule implements Serializable {
+public class StudentModule {
 
     @EmbeddedId
     StudentModuleID id;
@@ -23,25 +20,39 @@ public class StudentModule implements Serializable {
     @JoinColumn(name = "stmd_module_id")
     private Module stmd_module;
 
-    @NotBlank
-    private Year stmd_year;
+    @NotNull
+    private int stmd_year;
 
-    @NotBlank
+    @NotNull
     private int stmd_semester;
 
     private double grade;
 
-    public StudentModule(){
+    public StudentModule() {
         super();
     }
 
+    public StudentModuleID getId() {
+        return id;
+    }
 
+    public void setId(StudentModuleID id) {
+        this.id = id;
+    }
 
-    public StudentModule(Student student, Module module, Year year, int semester){
+    public int getStmd_year() {
+        return stmd_year;
+    }
+
+    public void setStmd_year(int stmd_year) {
+        this.stmd_year = stmd_year;
+    }
+
+    public StudentModule(Student student, Module module, int year, int semester) {
         stmd_student = student;
         stmd_module = module;
         stmd_year = year;
-        stmd_semester=semester;
+        stmd_semester = semester;
     }
 
     public Student getStmd_student() {
@@ -58,14 +69,6 @@ public class StudentModule implements Serializable {
 
     public void setStmd_module(Module stmd_module) {
         this.stmd_module = stmd_module;
-    }
-
-    public Year getStmd_year() {
-        return stmd_year;
-    }
-
-    public void setStmd_year(Year stmd_year) {
-        this.stmd_year = stmd_year;
     }
 
     public int getStmd_semester() {return stmd_semester;    }

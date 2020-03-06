@@ -1,8 +1,9 @@
 package com.ed.webapp.controller;
 
 import com.ed.webapp.model.Module;
-import com.ed.webapp.model.Staff;
+import com.ed.webapp.model.*;
 import com.ed.webapp.service.ModuleService;
+import com.ed.webapp.service.StudentModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,16 +20,18 @@ import java.util.List;
 public class ModuleController {
     @Autowired
     ModuleService moduleService;
+    @Autowired
+    StudentModuleService studentModuleService;
 
     @GetMapping("/module/{topic}")
-    public ModelAndView moduleList(ModelMap model,@PathVariable String topic){
-       List<Module> moduleList= moduleService.getModuleByTopic(topic);
-       if(moduleList.isEmpty()){
-           model.addAttribute("module error","no modules finded");
-           return new ModelAndView(new RedirectView("/student/profile"));
-       }
-       model.addAttribute("modules",moduleList);
-        return new ModelAndView("/module/{topic}",model);
+    public ModelAndView moduleList(ModelMap model, @PathVariable String topic) {
+        List<Module> moduleList = moduleService.getModuleByTopic(topic);
+        if (moduleList.isEmpty()) {
+            model.addAttribute("module error", "no modules finded");
+            return new ModelAndView(new RedirectView("/student/profile"));
+        }
+        model.addAttribute("modules", moduleList);
+        return new ModelAndView("/module/{topic}", model);
     }
 
     @GetMapping({"/edit/", "/edit"})
@@ -58,8 +61,29 @@ public class ModuleController {
     }
 
     @GetMapping("/grades/{id}")
-    @ResponseBody
-    public Module moduleGrades(@PathVariable String id) {
-        return moduleService.getModule(Long.parseLong(id));
+    public ModelAndView selectYearPage(ModelMap model, @PathVariable String id) {
+        Module module = moduleService.getModule(Long.parseLong(id));
+        model.addAttribute("current_module", module);
+        model.addAttribute("year_list", module.getAllYears());
+        model.addAttribute("selected_year", new Year());
+        return new ModelAndView("/module/year", model);
+    }
+
+    @PostMapping("/grades/{id}")
+    public RedirectView selectYear(@PathVariable String id, @ModelAttribute Year year) {
+        return new RedirectView("/module/grades/" + id + "/" + year);
+    }
+
+    @GetMapping("/grades/{id}/{year}")
+    public ModelAndView moduleGradesPage(ModelMap model, @PathVariable String id, @PathVariable String year) {
+        model.addAttribute("current_module", moduleService.getModule(Long.parseLong(id)));
+        model.addAttribute("current_year", Integer.parseInt(year));
+        return new ModelAndView("/module/grades", model);
+    }
+
+    @PostMapping("/grades/{id}/{year}")
+    public RedirectView moduleGrades(@PathVariable String id, @ModelAttribute Module module, @PathVariable String year) {
+        studentModuleService.updateGrades(module.getStudents());
+        return new RedirectView("/module/grades/" + id + "/" + year);
     }
 }

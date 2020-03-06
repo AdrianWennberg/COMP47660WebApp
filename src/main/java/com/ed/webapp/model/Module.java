@@ -3,6 +3,7 @@ package com.ed.webapp.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.*;
 
 @Entity
 @Table(name ="module")
@@ -21,7 +22,10 @@ public class Module {
     @NotNull
     private int mdl_MAXSTD;
 
-    public Module(){
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "stmd_module")
+    private List<StudentModule> students;
+
+    public Module() {
         super();
     }
 
@@ -72,15 +76,25 @@ public class Module {
         this.mdl_MAXSTD = mdl_MAXSTD;
     }
 
+    public List<StudentModule> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<StudentModule> students) {
+        this.students = students;
+    }
+
+    public Set<Integer> getAllYears() {
+        Set<Integer> years = new HashSet<>();
+        for (StudentModule student : students) {
+            years.add(student.getStmd_year());
+        }
+        return years;
+    }
+
     @Override
     public String toString() {
-        return "Module{" +
-                "mdl_ID=" +
-                mdl_ID +
-                ", mdl_name='" +
-                mdl_name +
-                '\'' +
-                ", mdl_topic='" +
+        return "Module{" + "mdl_ID=" + mdl_ID + ", mdl_name='" + mdl_name + '\'' + ", mdl_topic='" +
                 mdl_topic +
                 '\'' +
                 ", mdl_coordinator=" +
