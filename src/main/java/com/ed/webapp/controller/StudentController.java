@@ -6,6 +6,7 @@ import com.ed.webapp.repository.StudentRepository;
 import com.ed.webapp.exception.StudentNotFoundException;
 import com.ed.webapp.model.Student;
 import com.ed.webapp.service.StudentModuleService;
+import com.ed.webapp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,11 +27,11 @@ public class StudentController {
     @Autowired
     StudentRepository studentRepository;
     StudentModuleService studentModuleService;
-
+    StudentService studentService;
 
     @GetMapping("/student")
     @ResponseBody
-    public List<Student> getStudent(){return studentRepository.findAll();}
+    public List<Student> getStudent(){return studentService.getAllStudents();}
 
 
     @GetMapping("/student/studentlogin")
@@ -49,20 +50,26 @@ public class StudentController {
             return new ModelAndView(new RedirectView("/student/studentlogin"));
         }
         Student student=(Student) session.getAttribute("student_user");
-        model.addAttribute("studentModules",studentModuleService.getModulebyStudent(student.getStd_ID()));
+        //model.addAttribute("studentModules",studentModuleService.getModulebyStudent(student.getStd_ID()));
         return new ModelAndView("/student/profile",model);
     }
 
     @GetMapping("/student/registration")
-    public ModelAndView registrationPage(Model model, HttpSession session){
+    public ModelAndView registrationPage(ModelMap model, HttpSession session){
         Student student=new Student();
         model.addAttribute("current_student",student);
-        return new ModelAndView("/student/registration");
+        return new ModelAndView("/student/registration",model);
     }
-/*
+
+
     @PostMapping("/student/registration")
-    public RedirectView
-*/
+    public RedirectView createStudent(ModelMap model,HttpSession session,@ModelAttribute Student student){
+        //model.addAttribute("current_student",studentService.createStudent(student));
+        System.out.println(student.getStd_username());
+        studentService.createStudent(student);
+        return new RedirectView("/student/login");
+    }
+
     @PostMapping("/student/studentlogin")
     public ModelAndView login(ModelMap model, HttpSession session, @ModelAttribute Student student){
         List<Student>found = studentRepository.findByUsername(student.getStd_username());
