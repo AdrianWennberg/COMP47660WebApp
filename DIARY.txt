@@ -3,8 +3,10 @@ Group members: Nicolas Gallo, Christian Morales Guerro
 
 Things done:
     Christian Morales Guerro
+        Created initial SQL tables and model classes for Fees, and Student-module relationship
+        #
     Nicolas Gallo
-        Created initial SQL tables and model classes
+        Created initial SQL tables and model classes for Students, Staff, and Modules
         Created the student login, registration, and profile
         Worked on Module searching, bud did not complete this
 
@@ -14,7 +16,7 @@ Things done:
         Created school statistics page
 
 
-We did not finish more by now. With a bit more time, we could add the last functionalities.
+We did not finish more by now. With a bit more time, we could add the last couple of things.
 
 
 

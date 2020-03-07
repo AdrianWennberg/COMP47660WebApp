@@ -69,7 +69,7 @@ public class StudentController {
         //model.addAttribute("current_student",studentService.createStudent(student));
         System.out.println(student.getStd_username());
         studentService.createStudent(student);
-        return new RedirectView("/student/login");
+        return new RedirectView("/student/studentlogin");
     }
 
     @PostMapping("/student/studentlogin")
