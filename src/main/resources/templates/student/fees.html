@@ -23,7 +23,7 @@
                     <label>Current Fees:</label>
                     <span th:text="${current_fees.getFee_amount()}"></span>
 
-                    <a th:if="${!current_fees.isPaid()}" th:href="@{/student/pay/{id}(id=*{getStd_ID()})}">Pay Fees</a>
+                    <a th:if="${!current_fees.isPaid()}" th:href="@{/student/pay/}">Pay Fees</a>
                     <span th:if="${current_fees.isPaid()}">Fees paid</span>
                 </li>
                 <li th:each="f : ${previous_fees}" class="list-group-item">
