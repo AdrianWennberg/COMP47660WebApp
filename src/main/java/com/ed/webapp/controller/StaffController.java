@@ -34,6 +34,10 @@ public class StaffController {
         if (user == null) {
             return new ModelAndView(new RedirectView("/staff/login"));
         }
+
+        user = staffService.updateStaffMember(user);
+        session.setAttribute("staff_user", user);
+
         model.addAttribute("modules", user.getModules());
         return new ModelAndView("/staff/profile", model);
     }
