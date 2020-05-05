@@ -30,4 +30,8 @@ public class StudentModuleService {
             }
         }
     }
+
+    public void deleteStudentModule(StudentModule studentModule) {
+        repository.delete(studentModule);
+    }
 }

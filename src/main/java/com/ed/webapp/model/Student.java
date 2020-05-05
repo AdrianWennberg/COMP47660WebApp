@@ -5,7 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "student")
@@ -34,6 +34,12 @@ public class Student {
     private String std_nationality;
     @NotNull
     private SEX std_sex;
+
+    @OneToMany(mappedBy = "fee_student", fetch = FetchType.EAGER)
+    List<Fees> fees;
+
+    @OneToMany(mappedBy = "stmd_student", fetch = FetchType.EAGER)
+    Set<StudentModule> modules;
 
     @Override
     public int hashCode() {
@@ -137,6 +143,21 @@ public class Student {
 
     public void setStd_nationality(String std_nationality) {this.std_nationality = std_nationality; }
 
+    public List<Fees> getFees() {
+        return fees;
+    }
+
+    public void setFees(List<Fees> fees) {
+        this.fees = fees;
+    }
+
+    public Set<StudentModule> getModules() {
+        return modules;
+    }
+
+    public void setModules(Set<StudentModule> modules) {
+        this.modules = modules;
+    }
 
     @Override
     public boolean equals(Object o) {
