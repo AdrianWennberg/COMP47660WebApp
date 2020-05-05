@@ -31,13 +31,37 @@
                     <span class="font-weight-bold">Students:</span>
                     <span th:text="*{getCurrentStudents().size() + '/' + mdl_MAXSTD}">5/10</span>
                 </li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">Average grade:</span>
+                    <span th:text="*{getAverageGrade()}">57.80</span>
+                </li>
+            </ul>
+
+            <h3>
+                Average grades in previous years
+            </h3>
+
+            <ul class="list-group">
+                <li th:if="*{getAllYears().isEmpty()}" class="list-group-item">
+                    <span class="font-weight-bold">No previous module data</span>
+                </li>
+                <li th:each="y : *{getAllYears()}" class="list-group-item">
+                    <span class="font-weight-bold">[[${y}]]: </span>
+                    <span th:text="${current_module.getAverageGrade(y)}">57.80</span>
+                </li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">Average grade:</span>
+                    <span th:text="*{getAverageGrade()}">57.80</span>
+                </li>
             </ul>
 
 
         </div>
 
-        <div th:if="${session.staff_user} != null and ${session.student_user} == null" class="col-6"
+        <div th:if="${session.staff_user} != null and ${session.student_user} == null
+             and ${session.staff_user.equals(current_module.getMdl_coordinator())}" class="col-6"
              th:object="${current_module}">
+            <a href="/module/edit/1" th:href="@{/module/edit/{id}(id=*{getMdl_ID()})}"> Edit module </a>
             <h3>
                 Enrolled Students
             </h3>
