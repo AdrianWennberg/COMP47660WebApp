@@ -25,13 +25,45 @@
                 </li>
                 <li class="list-group-item">
                     <span class="font-weight-bold">Module Topic:</span>
-                    <span th:text="*{getMdl_topic()}">Doe</span>
+                    <span th:text="*{getMdl_topic()}">Topic</span>
                 </li>
                 <li class="list-group-item">
                     <span class="font-weight-bold">Students:</span>
-                    <span th:text="*{getCurrentStudents().size() + '/' + mdl_MAXSTD}">male</span>
+                    <span th:text="*{getCurrentStudents().size() + '/' + mdl_MAXSTD}">5/10</span>
                 </li>
             </ul>
+
+
+        </div>
+
+        <div th:if="${session.staff_user} != null and ${session.student_user} == null" class="col-6"
+             th:object="${current_module}">
+            <h3>
+                Enrolled Students
+            </h3>
+
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th> Name</th>
+                    <th> ID</th>
+                    <th> Email</th>
+                </tr>
+                </thead>
+                <tr th:each="student : *{getCurrentStudents()}">
+                    <td>
+                        <span th:text="${student.getStmd_student().getStd_name() + ' ' +
+                                         student.getStmd_student().getStd_surname()}">John Doe</span>
+                    </td>
+                    <td>
+                        <span th:text="${student.getStmd_student().getStd_ID()}">12345</span>
+                    </td>
+                    <td>
+                        <span th:text="${
+                        student.getStmd_student().getStd_email()}">jdoe@example.com</span>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
