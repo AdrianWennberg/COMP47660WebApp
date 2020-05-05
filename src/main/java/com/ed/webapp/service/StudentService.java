@@ -33,10 +33,7 @@ public class StudentService {
     }
 
     public void deleteStudent(Student student) {
-        System.out.println(student);
         student = repository.getOne(student.getStd_ID());
-        System.out.println(student.getFees());
-        System.out.println(student.getModules());
         for (Fees fees : student.getFees()) {
             feesService.deleteFees(fees);
         }
@@ -46,5 +43,9 @@ public class StudentService {
         }
 
         repository.delete(student);
+    }
+
+    public Student getStudent(Student user) {
+        return repository.findById(user.getStd_ID()).orElseThrow();
     }
 }

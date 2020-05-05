@@ -89,13 +89,10 @@ public class StudentController {
                 }
             }
         }
-        else if (found.isEmpty()) {
-            System.out.println("Error");
-        }
-        else {
+        else if (!found.isEmpty()) {
             throw new RuntimeException("Multiple student members found!");
         }
-        model.addAttribute("login_error","Incorrect login!");
+        model.addAttribute("login_error", "Incorrect login!");
         return new ModelAndView("/student/login", model);
     }
 
@@ -121,9 +118,10 @@ public class StudentController {
     @GetMapping("/pay/")
     public RedirectView payFees(HttpSession session) {
         Student user = (Student) session.getAttribute("student_user");
-        if (session.getAttribute("student_user") == null) {
+        if (user == null) {
             return new RedirectView("/student/login");
         }
+        user = studentService.getStudent(user);
         for (Fees fee : feeRepository.findByFee_student(user)) {
             if (fee.getFee_year() == 2020) {
                 fee.setPaid(true);
