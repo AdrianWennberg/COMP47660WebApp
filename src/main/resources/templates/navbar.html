@@ -23,7 +23,7 @@
             <a class="nav-link" href="/student/profile">Profile</a>
         </li>
         <li th:if="${session.staff_user} == null and ${session.student_user} == null" class="nav-item">
-            <a class="nav-link" href="/staff/login">Staff</a>
+            <a class="nav-link" href="/student/login">Student</a>
         </li>
 
         <li th:if="${session.staff_user} != null or ${session.student_user} != null" class="nav-item">
