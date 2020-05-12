@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "student")
@@ -157,6 +158,22 @@ public class Student {
 
     public void setModules(Set<StudentModule> modules) {
         this.modules = modules;
+    }
+
+    public Set<StudentModule> getCurrentModules() {
+        return getModules().stream()
+                           .filter(studentModule -> studentModule.getStmd_year() == 2020)
+                           .collect(Collectors.toSet());
+    }
+
+    public Set<StudentModule> getPastModules() {
+        Set<StudentModule> modules = new HashSet<>(getModules());
+        modules.removeAll(getCurrentModules());
+        return modules;
+    }
+
+    public boolean hasTakenModule(Module module) {
+        return getModules().stream().anyMatch(studentModule -> studentModule.getStmd_module().equals(module));
     }
 
     @Override

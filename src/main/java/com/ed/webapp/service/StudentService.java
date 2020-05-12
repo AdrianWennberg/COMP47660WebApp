@@ -48,4 +48,8 @@ public class StudentService {
     public Student getStudent(Student user) {
         return repository.findById(user.getStd_ID()).orElseThrow();
     }
+
+    public Student updateStudent(Student student) {
+        return getStudent(student);
+    }
 }

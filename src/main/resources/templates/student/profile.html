@@ -10,9 +10,9 @@
 <nav class="navbar navbar-dark bg-dark" th:replace="navbar.html :: header"><span
         class="navbar-text">Navbar Placeholder</span>
 </nav>
-<div class="container my-3">
+<div class="container my-3" th:object="${session.student_user}">
     <div class="row">
-        <div class="col-6" th:object="${session.student_user}">
+        <div class="col-6">
             <h1>
                 <span th:text="*{getStd_username()}"></span>'s Profile
             </h1>
@@ -63,7 +63,66 @@
                 </label>
             </div>
             <div>
-                <h3>My Modules</h3>
+                <h3>Current Modules</h3>
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th> Module</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="*{getCurrentModules().isEmpty()}">
+                        <td colspan="1">Not enrolled to any modules</td>
+                    </tr>
+                    <tr th:each="m : *{getCurrentModules()}">
+                        <td>
+                            <a href="/module/info/1"
+                               th:href="@{/module/info/{id}(id=${m.getStmd_module().getMdl_ID()})}">
+                                <span th:text="${m.getStmd_module().getMdl_name()}"> Module Name </span>
+                            </a>
+                        </td>
+
+                        <td>
+                            <a href="/module/info/1"
+                               th:href="@{/module/unenroll/{id}(id=${m.getStmd_module().getMdl_ID()})}">
+                                <span> Leave module </span>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+                <h3>Past Modules</h3>
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th> Module</th>
+                        <th> Year</th>
+                        <th> Grade</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="*{getPastModules().isEmpty()}">
+                        <td colspan="1">Not enrolled to any modules</td>
+                    </tr>
+                    <tr th:each="m : *{getPastModules()}">
+                        <td>
+                            <a href="/module/info/1"
+                               th:href="@{/module/info/{id}(id=${m.getStmd_module().getMdl_ID()})}">
+                                <span th:text="${m.getStmd_module().getMdl_name()}"> Module Name </span>
+                            </a>
+                        </td>
+                        <td>
+                            <span th:text="${m.getStmd_year()}"> 2015 </span>
+                        </td>
+                        <td>
+                            <span th:text="${m.getGrade()}"> 34 </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

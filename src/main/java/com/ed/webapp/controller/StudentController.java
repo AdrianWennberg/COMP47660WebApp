@@ -39,9 +39,12 @@ public class StudentController {
 
     @GetMapping("/profile")
     public ModelAndView profilePage(ModelMap model, HttpSession session) {
-        if (session.getAttribute("student_user") == null) {
+        Student user = (Student) session.getAttribute("student_user");
+        if (user == null) {
             return new ModelAndView(new RedirectView("/student/login"));
         }
+        user = studentService.updateStudent(user);
+        session.setAttribute("student_user", user);
         return new ModelAndView("/student/profile", model);
     }
 
