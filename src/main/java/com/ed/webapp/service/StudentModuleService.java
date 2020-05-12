@@ -1,7 +1,7 @@
 package com.ed.webapp.service;
 
 import com.ed.webapp.model.Module;
-import com.ed.webapp.model.StudentModule;
+import com.ed.webapp.model.*;
 import com.ed.webapp.repository.StudentModuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,5 +33,18 @@ public class StudentModuleService {
 
     public void deleteStudentModule(StudentModule studentModule) {
         repository.delete(studentModule);
+    }
+
+    public void enrollStudent(Student student, Module module) {
+        StudentModule sm = new StudentModule(student, module, 2020, 2);
+        sm.setId(new StudentModuleID(student.getStd_ID(), module.getMdl_ID()));
+        repository.save(sm);
+    }
+
+    public void unenrollStudent(Student student, Module module) {
+        StudentModuleID id = new StudentModuleID(student.getStd_ID(), module.getMdl_ID());
+        StudentModule sm = repository.findById(id).orElseThrow();
+
+        repository.delete(sm);
     }
 }

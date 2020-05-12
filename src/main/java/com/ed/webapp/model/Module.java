@@ -155,4 +155,21 @@ public class Module {
                 mdl_MAXSTD +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Module module = (Module) o;
+        return mdl_ID.equals(module.mdl_ID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mdl_ID);
+    }
 }
