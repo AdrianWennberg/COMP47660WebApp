@@ -14,8 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/student")
@@ -27,6 +26,17 @@ public class StudentController {
     StudentService studentService;
     @Autowired
     FeesRepository feeRepository;
+
+    @GetMapping("/data")
+    @ResponseBody
+    public Map<String, Object> getStudentData() {
+        HashMap<String, Object> studentData = new HashMap<>();
+
+        studentData.put("nationalities", studentService.getStudentCountByNationality());
+        studentData.put("genders", studentService.getStudentCountByGender());
+
+        return studentData;
+    }
 
     @GetMapping("/login")
     public ModelAndView loginPage(ModelMap model, HttpSession session) {

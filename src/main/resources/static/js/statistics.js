@@ -174,25 +174,26 @@ const countries = [
     }
 ];
 
-var width = 500;
-var height = 500;
-var radius = 400 / 2;
-var color = d3.scale.category20c();
+const width = 500;
+const height = 500;
+const radius = 400 / 2;
+const color = d3.scale.category20c();
 
 
 // Make a request for a user with a given ID
-axios.get('/student')
+axios.get('/student/data')
     .then(function (response) {
         // handle success
         student_sunburst(response.data)
     });
 
-function student_sunburst(students) {
+function student_sunburst(data) {
 
     let country_count = countries.map(x => ({
         "name": x.Country,
-        "size": students.filter(s => s.std_nationality === x.Country).length
+        "size": data["nationalities"][x.Country]
     }));
+
 
     let continents = [...new Set(countries.map(x => x.Continent))];
     let continents_per_country = Object.assign({}, ...countries.map(x => ({[x.Country]: x.Continent})));
@@ -205,16 +206,13 @@ function student_sunburst(students) {
         ))
     };
 
-    console.log(students);
-
     let gender_data = {
         "name": "Student Gender", "children": [
-            {"name": "Male", "size": students.filter(x => x.std_sex === "MALE").length},
-            {"name": "Female", "size": students.filter(x => x.std_sex === "FEMALE").length}
+            {"name": "Male", "size": data["genders"]["MALE"]},
+            {"name": "Female", "size": data["genders"]["FEMALE"]}
         ]
     };
 
-    console.log(gender_data);
 
     draw_sunburst("#student-nationality", nationality_data);
     draw_sunburst("#student-gender", gender_data);

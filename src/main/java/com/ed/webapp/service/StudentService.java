@@ -5,7 +5,7 @@ import com.ed.webapp.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class StudentService {
@@ -24,7 +24,6 @@ public class StudentService {
     public List<Student> getStudentByUsername(String username) {return repository.findByUsername(username);}
 
     public Student createStudent(Student new_student) {
-        System.out.println(new_student);
         return repository.save(new_student);
     }
 
@@ -51,5 +50,27 @@ public class StudentService {
 
     public Student updateStudent(Student student) {
         return getStudent(student);
+    }
+
+    public Map<String, Integer> getStudentCountByNationality() {
+        HashMap<String, Integer> count = new HashMap<>();
+
+        for (Student student : getAllStudents()) {
+            String nationality = student.getStd_nationality();
+            Integer current = count.getOrDefault(nationality, 0);
+            count.put(nationality, current + 1);
+        }
+        return count;
+    }
+
+    public Map<String, Integer> getStudentCountByGender() {
+        HashMap<String, Integer> count = new HashMap<>();
+
+        for (Student student : getAllStudents()) {
+            String gender = student.getStd_sex().toString();
+            Integer current = count.getOrDefault(gender, 0);
+            count.put(gender, current + 1);
+        }
+        return count;
     }
 }
