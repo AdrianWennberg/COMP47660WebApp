@@ -4,6 +4,7 @@ import com.ed.webapp.model.Fees;
 import com.ed.webapp.model.Student;
 import com.ed.webapp.repository.FeesRepository;
 import com.ed.webapp.repository.StudentRepository;
+import com.ed.webapp.service.CheckRegistrationService;
 import com.ed.webapp.service.StudentModuleService;
 import com.ed.webapp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,11 +65,17 @@ public class StudentController {
         model.addAttribute("current_student", student);
         return new ModelAndView("/student/registration", model);
     }
-
+    CheckRegistrationService checkRegistrationService=new CheckRegistrationService();
     @PostMapping("/registration")
     public RedirectView createStudent(ModelMap model, HttpSession session, @ModelAttribute Student student) {
-        studentService.createStudent(student);
-        return new RedirectView("/student/login");
+        if(checkRegistrationService.checkFields(student)){
+            studentService.createStudent(student);
+            return new RedirectView("/student/login");
+        }
+        else{
+            model.addAttribute("registration_error", "Incorrect registration!");
+            return new RedirectView("/student/registration");
+        }
     }
 
     @GetMapping("/unregister")
