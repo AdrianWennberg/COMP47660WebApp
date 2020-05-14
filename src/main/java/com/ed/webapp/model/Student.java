@@ -1,11 +1,14 @@
 package com.ed.webapp.model;
 
+import com.ed.webapp.validation.ValidPassword;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -19,6 +22,7 @@ public class Student {
     @GenericGenerator(name = "native", strategy = "native")
     private Long std_ID;
     @NotBlank
+    @ValidPassword
     private String std_password;
     @NotBlank
     private String std_name;
@@ -33,7 +37,7 @@ public class Student {
     private String std_email;
     @NotBlank
     private String std_nationality;
-    @NotNull
+    //@NotNull
     private SEX std_sex;
 
     @OneToMany(mappedBy = "fee_student", fetch = FetchType.EAGER)

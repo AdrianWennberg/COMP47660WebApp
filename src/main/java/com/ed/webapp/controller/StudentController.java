@@ -8,16 +8,19 @@ import com.ed.webapp.service.CheckRegistrationService;
 import com.ed.webapp.service.StudentModuleService;
 import com.ed.webapp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/student")
@@ -71,8 +74,13 @@ public class StudentController {
     }
     CheckRegistrationService checkRegistrationService=new CheckRegistrationService();
     @PostMapping("/registration")
-    public RedirectView createStudent(ModelMap model, HttpSession session, @ModelAttribute Student student) {
+    public RedirectView createStudent(ModelMap model, HttpSession session, @Valid @ModelAttribute Student student, BindingResult bindingResult) {
         List<Student> found = studentRepository.findByUsername(student.getStd_username());
+        if(bindingResult.hasErrors()) {
+            System.out.println("errore");
+            model.addAttribute("registration_error", "Incorrect registration!");
+            return new RedirectView("/student/registration");
+        }
         if(checkRegistrationService.checkFields(student) && found.isEmpty() ){//&& studentService.getStudent(student)!=null){
                 System.out.println(student);
                 studentService.createStudent(student);
@@ -80,7 +88,7 @@ public class StudentController {
         }
         else {
             model.addAttribute("registration_error", "Incorrect registration!");
-            return new RedirectView("/");
+            return new RedirectView("/student/registration");
         }
     }
 

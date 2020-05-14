@@ -15,12 +15,12 @@ public class CheckRegistrationService {
         String pwd = student.getStd_password();
         String nationality = student.getStd_nationality();
 
-        boolean flag=(username.matches("\\w+")) &&
+        boolean flag=(username.matches("\\w+"));
                         //(name.matches("[:alpha:]+")) &&
                        // (surname.matches("[:alpha:]+")) &&
                         //(email.matches("[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}")) &&
                        // (!address.isEmpty()) &&
-                        (pwd.matches("\\w+"));//&&
+                        //(pwd.matches("\\w+"));//&&
                         //(nationality.matches("[:alpha:]+"));
         if(flag)System.out.println("true");
         else System.out.println("false");
