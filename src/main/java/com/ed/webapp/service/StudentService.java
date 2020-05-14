@@ -20,7 +20,7 @@ public class StudentService {
     @Autowired
     StudentModuleService studentModuleService;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public List<Student> getAllStudents() {return repository.findAll();}
 
@@ -81,5 +81,23 @@ public class StudentService {
             count.put(gender, current + 1);
         }
         return count;
+    }
+
+    public Optional<Student> confirmLogin(Student login_details) {
+        List<Student> found = repository.findByUsername(login_details.getStd_username());
+        if (found.isEmpty()) {
+            return Optional.empty();
+        }
+        else if (found.size() > 1) {
+            throw new RuntimeException("Multiple users found with same username");
+        }
+
+        Student user = found.get(0);
+        if (bCryptPasswordEncoder.matches(login_details.getStd_password(), user.getStd_password())) {
+            return Optional.of(user);
+        }
+        else {
+            return Optional.empty();
+        }
     }
 }
