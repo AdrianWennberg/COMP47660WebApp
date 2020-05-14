@@ -60,10 +60,14 @@ public class ModuleController {
     }
 
     @PostMapping("/edit/{id}")
-    public RedirectView editModule(Model model, @PathVariable String id, @ModelAttribute Module module) {
-        Module updated = moduleService.updateModule(Long.parseLong(id), module);
-        model.addAttribute("current_module", updated);
-        return new RedirectView("/module/edit/" + updated.getMdl_ID());
+    public RedirectView editModule(Model model,HttpSession session, @PathVariable String id, @ModelAttribute Module module) {
+        Staff user = (Staff) session.getAttribute("staff_user");
+        if(user.equals(module.getMdl_coordinator())) {
+            Module updated = moduleService.updateModule(Long.parseLong(id), module);
+            model.addAttribute("current_module", updated);
+            return new RedirectView("/module/edit/" + updated.getMdl_ID());
+        }
+        return new RedirectView("/profile");
     }
 
     @GetMapping("/grades/{id}")
