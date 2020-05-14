@@ -92,4 +92,28 @@ public class ModuleController {
         studentModuleService.updateGrades(module.getStudents());
         return new RedirectView("/module/grades/" + id + "/" + year);
     }
+
+    @GetMapping("/enroll/{id}")
+    public RedirectView enroll(HttpSession session, @PathVariable String id) {
+        Student student = (Student) session.getAttribute("student_user");
+        if (student == null) {
+            throw new IllegalCallerException("Trying to enroll with no student logged in");
+        }
+        Module module = moduleService.getModule(Long.parseLong(id));
+        studentModuleService.enrollStudent(student, module);
+
+        return new RedirectView("/student/profile");
+    }
+
+    @GetMapping("/unenroll/{id}")
+    public RedirectView unenroll(HttpSession session, @PathVariable String id) {
+        Student student = (Student) session.getAttribute("student_user");
+        if (student == null) {
+            throw new IllegalCallerException("Trying to enroll with no student logged in");
+        }
+        Module module = moduleService.getModule(Long.parseLong(id));
+        studentModuleService.unenrollStudent(student, module);
+
+        return new RedirectView("/student/profile");
+    }
 }

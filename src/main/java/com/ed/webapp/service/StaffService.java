@@ -31,6 +31,10 @@ public class StaffService {
         return Optional.of(user);
     }
 
+    public Staff updateStaffMember(Staff staff) {
+        return getStaffMember(staff).orElseThrow();
+    }
+
     public long getStaffCount() {
         return repository.count();
     }

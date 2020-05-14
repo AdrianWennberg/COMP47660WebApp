@@ -12,6 +12,14 @@ public class StudentModuleID implements Serializable {
     @Column
     Long stmd_module_id;
 
+    public StudentModuleID() {
+    }
+
+    public StudentModuleID(Long stmd_student_id, Long stmd_module_id) {
+        this.stmd_student_id = stmd_student_id;
+        this.stmd_module_id = stmd_module_id;
+    }
+
     public Long getStmd_student_id() {
         return stmd_student_id;
     }

@@ -8,6 +8,10 @@
 </head>
 <body>
 
+<nav class="navbar navbar-dark bg-dark" th:replace="navbar.html :: header"><span
+        class="navbar-text">Navbar Placeholder</span>
+</nav>
+
 <div class="container my-3">
     <div class="row  justify-content-start">
         <div class="col-6" th:object="${current_module}">
@@ -21,13 +25,83 @@
                 </li>
                 <li class="list-group-item">
                     <span class="font-weight-bold">Module Topic:</span>
-                    <span th:text="*{getMdl_topic()}">Doe</span>
+                    <span th:text="*{getMdl_topic()}">Topic</span>
                 </li>
                 <li class="list-group-item">
                     <span class="font-weight-bold">Students:</span>
-                    <span th:text="*{getCurrentStudents().size() + '/' + mdl_MAXSTD}">male</span>
+                    <span th:text="*{getCurrentStudents().size() + '/' + mdl_MAXSTD}">5/10</span>
+                </li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">Average grade:</span>
+                    <span th:text="*{getAverageGrade()}">57.80</span>
                 </li>
             </ul>
+
+            <h3>
+                Average grades in previous years
+            </h3>
+
+            <ul class="list-group">
+                <li th:if="*{getAllYears().isEmpty()}" class="list-group-item">
+                    <span class="font-weight-bold">No previous module data</span>
+                </li>
+                <li th:each="y : *{getAllYears()}" class="list-group-item">
+                    <span class="font-weight-bold">[[${y}]]: </span>
+                    <span th:text="${current_module.getAverageGrade(y)}">57.80</span>
+                </li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">Average grade:</span>
+                    <span th:text="*{getAverageGrade()}">57.80</span>
+                </li>
+            </ul>
+
+
+        </div>
+
+        <div th:if="${session.staff_user} != null and ${session.student_user} == null
+             and ${session.staff_user.equals(current_module.getMdl_coordinator())}" class="col-6"
+             th:object="${current_module}">
+            <a href="/module/edit/1" th:href="@{/module/edit/{id}(id=*{getMdl_ID()})}"> Edit module </a>
+            <h3>
+                Enrolled Students
+            </h3>
+
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th> Name</th>
+                    <th> ID</th>
+                    <th> Email</th>
+                </tr>
+                </thead>
+                <tr th:each="student : *{getCurrentStudents()}">
+                    <td>
+                        <span th:text="${student.getStmd_student().getStd_name() + ' ' +
+                                         student.getStmd_student().getStd_surname()}">John Doe</span>
+                    </td>
+                    <td>
+                        <span th:text="${student.getStmd_student().getStd_ID()}">12345</span>
+                    </td>
+                    <td>
+                        <span th:text="${
+                        student.getStmd_student().getStd_email()}">jdoe@example.com</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div th:if="${session.student_user} != null and ${session.staff_user} == null" class="col-6"
+             th:object="${session.student_user}">
+            <h3>
+                Enroll to module
+            </h3>
+            <span th:if="${session.student_user.hasTakenModule(current_module)}">
+                You are already enrolled or have taken this module in the past</span>
+            <a th:if="${!session.student_user.hasTakenModule(current_module)}"
+               href="/module/info/1"
+               th:href="@{/module/enroll/{id}(id=${current_module.getMdl_ID()})}">
+                <button type="button">Enroll</button>
+            </a>
         </div>
     </div>
 </div>

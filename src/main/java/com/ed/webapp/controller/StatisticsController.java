@@ -24,9 +24,6 @@ public class StatisticsController {
         model.addAttribute("staff_count", staffService.getStaffCount());
         model.addAttribute("student_count", studentService.getStudentCount());
 
-        System.out.println(studentService.getAllStudents().get(0));
-        System.out.println(studentService.getAllStudents().get(1));
-
         return new ModelAndView("/statistics", model);
     }
 }

@@ -14,14 +14,14 @@
     <div class="row  justify-content-start">
          <div class="col-6">
             <h1>Student Login</h1>
-            <form action="#" th:action="@{/student/studentlogin}" th:object="${student}" method="post">
+            <form action="#" th:action="@{/student/login}" th:object="${student}" method="post">
                 <div class="form-group">
                     <label>
                         Username:
                         <input type="text" class="form-control" th:field="*{std_username}"/>
                     </label>
                     <label>
-                    Password:
+                        Password:
                         <input type="password" class="form-control" th:field="*{std_password}"/>
                     </label>
                     <input type="submit" value="Login"/>

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name ="module")
@@ -84,30 +85,68 @@ public class Module {
     }
 
     public List<StudentModule> getCurrentStudents() {
-        List<StudentModule> currentStudents = new LinkedList<>();
-        for (StudentModule student : students) {
-            if (student.getStmd_year() == 2020) {
-                currentStudents.add(student);
-            }
-        }
-        return currentStudents;
+        // This year should not be hard-coded
+        return getStudentsForYear(2020);
     }
 
     public void setStudents(List<StudentModule> students) {
         this.students = students;
     }
 
-    public Set<Integer> getAllYears() {
+    public List<Integer> getAllYears() {
         Set<Integer> years = new HashSet<>();
         for (StudentModule student : students) {
             years.add(student.getStmd_year());
         }
-        return years;
+        return List.copyOf(years).stream().sorted().collect(Collectors.toList());
+    }
+
+    private List<StudentModule> getStudentsForYear(int year) {
+        ArrayList<StudentModule> studentList = new ArrayList<>();
+        for (StudentModule student : students) {
+            // This year should not be hard-coded
+            if (student.getStmd_year() == year) {
+                studentList.add(student);
+            }
+        }
+        return studentList;
+    }
+
+    public int getAverageGrade(Integer year) {
+        return getAverageGrade(getStudentsForYear(year));
+    }
+
+    public int getAverageGrade() {
+        return getAverageGrade(students);
+    }
+
+    private int getAverageGrade(List<StudentModule> studentList) {
+        int sum = 0;
+        int blank = 0;
+        for (StudentModule student : studentList) {
+            if (student.getGrade() == 0) {
+                blank++;
+            }
+            else {
+                sum += student.getGrade();
+            }
+        }
+        if ((studentList.size() - blank) == 0) {
+            return 0;
+        }
+
+        return sum / (studentList.size() - blank);
     }
 
     @Override
     public String toString() {
-        return "Module{" + "mdl_ID=" + mdl_ID + ", mdl_name='" + mdl_name + '\'' + ", mdl_topic='" +
+        return "Module{" +
+                "mdl_ID=" +
+                mdl_ID +
+                ", mdl_name='" +
+                mdl_name +
+                '\'' +
+                ", mdl_topic='" +
                 mdl_topic +
                 '\'' +
                 ", mdl_coordinator=" +
@@ -115,5 +154,22 @@ public class Module {
                 ", mdl_MAXSTD=" +
                 mdl_MAXSTD +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Module module = (Module) o;
+        return mdl_ID.equals(module.mdl_ID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mdl_ID);
     }
 }

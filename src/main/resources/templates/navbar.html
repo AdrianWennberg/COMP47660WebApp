@@ -13,16 +13,22 @@
     <a class="navbar-brand mr-auto" href="/"> University Of Springfield</a>
     <ul class="navbar-nav">
 
+        <li th:if="${session.staff_user} != null and ${session.student_user} == null" class="nav-item">
+            <a class="nav-link" href="/staff/profile">Profile</a>
+        </li>
         <li th:if="${session.staff_user} == null and ${session.student_user} == null" class="nav-item">
             <a class="nav-link" href="/staff/login">Staff</a>
         </li>
+        <li th:if="${session.staff_user} == null and ${session.student_user} != null" class="nav-item">
+            <a class="nav-link" href="/student/profile">Profile</a>
+        </li>
         <li th:if="${session.staff_user} == null and ${session.student_user} == null" class="nav-item">
-            <a class="nav-link" href="/student/studentlogin">Student</a>
+            <a class="nav-link" href="/student/login">Student</a>
         </li>
 
         <li th:if="${session.staff_user} != null or ${session.student_user} != null" class="nav-item">
-            <a class="nav-link" href="/logout">Log out</a
-            ></li>
+            <a class="nav-link" href="/logout">Log out</a>
+        </li>
     </ul>
 </nav>
 </body>

@@ -46,13 +46,20 @@
                 </tr>
                 <tr th:each="m : ${modules}">
                     <td>
-                        <span th:text="${m.getMdl_name()}"> Name </span></td>
-                    <td><a href="/module/edit"
+                        <span th:text="${m.getMdl_name()}"> Name </span>
+                        <a href="/module/info/1"
+                           th:href="@{/module/info/{id}(id=${m.getMdl_ID()})}">
+                            (view) </a>
+                    </td>
+                    <td>
+                        <a href="/module/edit"
                            th:href="@{/module/edit/{id}(id=${m.getMdl_ID()})}">
-                        edit
-                        module </a></td>
-                    <td><a href="/module/grades/#"
-                           th:href="@{/module/grades/{id}(id=${m.getMdl_ID()})}"> edit grades </a></td>
+                            edit module </a>
+                    </td>
+                    <td>
+                        <a href="/module/grades/1"
+                           th:href="@{/module/grades/{id}(id=${m.getMdl_ID()})}"> edit grades </a>
+                    </td>
                 </tr>
 
                 <tr>
