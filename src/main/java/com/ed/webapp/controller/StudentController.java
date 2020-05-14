@@ -4,9 +4,7 @@ import com.ed.webapp.model.Fees;
 import com.ed.webapp.model.Student;
 import com.ed.webapp.repository.FeesRepository;
 import com.ed.webapp.repository.StudentRepository;
-import com.ed.webapp.service.CheckRegistrationService;
-import com.ed.webapp.service.StudentModuleService;
-import com.ed.webapp.service.StudentService;
+import com.ed.webapp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -113,21 +111,15 @@ public class StudentController {
 
     @PostMapping("/login")
     public ModelAndView login(ModelMap model, HttpSession session, @ModelAttribute Student student) {
-        List<Student> found = studentRepository.findByUsername(student.getStd_username());
-        if (found.size() == 1) {
-            Student user = found.get(0);
-            if (studentService.checkPassword(student)){//user.checkPassword(student.getStd_password())) {
-                session.setAttribute("student_user", user);
-                if (session.getAttribute("student_user") != null) {
-                    return new ModelAndView(new RedirectView("/student/profile"));
-                }
-            }
+        Optional<Student> studentOptional = studentService.confirmLogin(student);
+        if (studentOptional.isEmpty()) {
+
+            model.addAttribute("login_error", "Incorrect login!");
+            return new ModelAndView("/student/login", model);
         }
-        else if (!found.isEmpty()) {
-            throw new RuntimeException("Multiple student members found!");
-        }
-        model.addAttribute("login_error", "Incorrect login!");
-        return new ModelAndView("/student/login", model);
+
+        session.setAttribute("student_user", studentOptional.get());
+        return new ModelAndView(new RedirectView("/student/profile"));
     }
 
     @GetMapping("/fees")

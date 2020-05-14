@@ -1,0 +1,13 @@
+These are all the pre-loaded staff user logins:
+
+test, pass
+SEstrada, IAN56NYE7OT
+CMcclure, WJX98AME2NB
+DNieves, KAW45WDS1NN
+ISosa, TRL69RRV4GV
+CEllis, XKE30ULX5YT
+PWatson, DYK21GYN8LN
+MPruitt, SMT89XOH5TN
+ERogers, QVL96YJC4VW
+XPalmer, DJB13JBQ5EA
+RHobbs, XOQ14HEO3CK
