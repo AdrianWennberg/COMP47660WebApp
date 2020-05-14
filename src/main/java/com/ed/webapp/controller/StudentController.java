@@ -8,11 +8,13 @@ import com.ed.webapp.service.CheckRegistrationService;
 import com.ed.webapp.service.StudentModuleService;
 import com.ed.webapp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -27,6 +29,8 @@ public class StudentController {
     StudentService studentService;
     @Autowired
     FeesRepository feeRepository;
+
+
 
     @GetMapping("/data")
     @ResponseBody
@@ -68,13 +72,15 @@ public class StudentController {
     CheckRegistrationService checkRegistrationService=new CheckRegistrationService();
     @PostMapping("/registration")
     public RedirectView createStudent(ModelMap model, HttpSession session, @ModelAttribute Student student) {
-        if(checkRegistrationService.checkFields(student)){
-            studentService.createStudent(student);
-            return new RedirectView("/student/login");
+        List<Student> found = studentRepository.findByUsername(student.getStd_username());
+        if(checkRegistrationService.checkFields(student) && found.isEmpty() ){//&& studentService.getStudent(student)!=null){
+                System.out.println(student);
+                studentService.createStudent(student);
+                return new RedirectView("/student/login");
         }
-        else{
+        else {
             model.addAttribute("registration_error", "Incorrect registration!");
-            return new RedirectView("/student/registration");
+            return new RedirectView("/");
         }
     }
 
@@ -102,7 +108,7 @@ public class StudentController {
         List<Student> found = studentRepository.findByUsername(student.getStd_username());
         if (found.size() == 1) {
             Student user = found.get(0);
-            if (user.checkPassword(student.getStd_password())) {
+            if (studentService.checkPassword(user)){//user.checkPassword(student.getStd_password())) {
                 session.setAttribute("student_user", user);
                 if (session.getAttribute("student_user") != null) {
                     return new ModelAndView(new RedirectView("/student/profile"));

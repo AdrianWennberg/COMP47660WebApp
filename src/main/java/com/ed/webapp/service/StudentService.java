@@ -3,6 +3,7 @@ package com.ed.webapp.service;
 import com.ed.webapp.model.*;
 import com.ed.webapp.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,12 +20,24 @@ public class StudentService {
     @Autowired
     StudentModuleService studentModuleService;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+
     public List<Student> getAllStudents() {return repository.findAll();}
 
     public List<Student> getStudentByUsername(String username) {return repository.findByUsername(username);}
 
-    public Student createStudent(Student new_student) {
-        return repository.save(new_student);
+    public void createStudent(Student new_student) {
+        new_student.setStd_password(bCryptPasswordEncoder.encode(new_student.getStd_password()));
+        repository.save(new_student);
+    }
+    public boolean checkPassword(Student student){
+        List<Student>found=getStudentByUsername(student.getStd_username());
+        Student user=found.get(0);
+        System.out.println(student.getStd_password());
+        System.out.println(user.getStd_password());
+        boolean flag= bCryptPasswordEncoder.matches(student.getStd_password(),user.getStd_password());
+        if(!flag)System.out.println("false");
+        return user.getStd_password().equals(student.getStd_password());
     }
 
     public long getStudentCount() {
@@ -43,7 +56,6 @@ public class StudentService {
 
         repository.delete(student);
     }
-
     public Student getStudent(Student user) {
         return repository.findById(user.getStd_ID()).orElseThrow();
     }
