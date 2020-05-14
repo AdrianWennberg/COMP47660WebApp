@@ -33,11 +33,8 @@ public class StudentService {
     public boolean checkPassword(Student student){
         List<Student>found=getStudentByUsername(student.getStd_username());
         Student user=found.get(0);
-        System.out.println(student.getStd_password());
-        System.out.println(user.getStd_password());
-        boolean flag= bCryptPasswordEncoder.matches(student.getStd_password(),user.getStd_password());
-        if(!flag)System.out.println("false");
-        return user.getStd_password().equals(student.getStd_password());
+        return bCryptPasswordEncoder.matches(student.getStd_password(),user.getStd_password());
+
     }
 
     public long getStudentCount() {

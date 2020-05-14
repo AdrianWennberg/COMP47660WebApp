@@ -108,7 +108,7 @@ public class StudentController {
         List<Student> found = studentRepository.findByUsername(student.getStd_username());
         if (found.size() == 1) {
             Student user = found.get(0);
-            if (studentService.checkPassword(user)){//user.checkPassword(student.getStd_password())) {
+            if (studentService.checkPassword(student)){//user.checkPassword(student.getStd_password())) {
                 session.setAttribute("student_user", user);
                 if (session.getAttribute("student_user") != null) {
                     return new ModelAndView(new RedirectView("/student/profile"));
