@@ -12,6 +12,7 @@ public class LogoutController {
     public RedirectView logout(HttpSession session) {
         session.removeAttribute("staff_user");
         session.removeAttribute("student_user");
+        session.invalidate();
         return new RedirectView("/");
     }
 }
