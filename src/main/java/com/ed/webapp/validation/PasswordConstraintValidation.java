@@ -25,7 +25,8 @@ public class PasswordConstraintValidation implements ConstraintValidator<ValidPa
                 //new NumericalSequenceRule(3,false),
                 //new AlphabeticalSequenceRule(3,false),
                 //new QwertySequenceRule(3,false),
-                new WhitespaceRule()
+                new WhitespaceRule(),
+                new IllegalRegexRule("[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}")
 
         ));
         RuleResult result = validator.validate(new PasswordData(password));
