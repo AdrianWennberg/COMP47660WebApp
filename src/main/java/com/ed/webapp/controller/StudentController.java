@@ -4,7 +4,9 @@ import com.ed.webapp.model.Fees;
 import com.ed.webapp.model.Student;
 import com.ed.webapp.repository.FeesRepository;
 import com.ed.webapp.repository.StudentRepository;
-import com.ed.webapp.service.*;
+import com.ed.webapp.service.CheckRegistrationService;
+import com.ed.webapp.service.StudentModuleService;
+import com.ed.webapp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,10 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/student")
