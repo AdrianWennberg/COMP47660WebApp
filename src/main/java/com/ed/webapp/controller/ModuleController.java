@@ -2,18 +2,16 @@ package com.ed.webapp.controller;
 
 import com.ed.webapp.model.Module;
 import com.ed.webapp.model.*;
-import com.ed.webapp.service.ModuleService;
-import com.ed.webapp.service.StudentModuleService;
+import com.ed.webapp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
-import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @RequestMapping("/module")
@@ -23,32 +21,46 @@ public class ModuleController {
     @Autowired
     StudentModuleService studentModuleService;
 
-    @GetMapping("/module/{topic}")
-    public ModelAndView moduleList(ModelMap model, @PathVariable String topic) {
-        List<Module> moduleList = moduleService.getModuleByTopic(topic);
-        if (moduleList.isEmpty()) {
-            model.addAttribute("module error", "no modules finded");
-            return new ModelAndView(new RedirectView("/student/profile"));
-        }
-        model.addAttribute("modules", moduleList);
-        return new ModelAndView("/module/{topic}", model);
-    }
+    @Autowired
+    public StaffService staffService;
+
+    @Autowired
+    public StudentService studentService;
+
+    // Broken module search
+//    @GetMapping("/module/{topic}")
+//    public ModelAndView moduleList(ModelMap model, @PathVariable String topic) {
+//        List<Module> moduleList = moduleService.getModuleByTopic(topic);
+//        if (moduleList.isEmpty()) {
+//            model.addAttribute("module error", "no modules finded");
+//            return new ModelAndView(new RedirectView("/student/profile"));
+//        }
+//        model.addAttribute("modules", moduleList);
+//        return new ModelAndView("/module/{topic}", model);
+//    }
 
     @GetMapping({"/edit/", "/edit"})
-    public ModelAndView newModulePage(ModelMap model, HttpSession session) {
-        Object user = session.getAttribute("staff_user");
-        if (user == null) {
-            return new ModelAndView(new RedirectView("/"));
-        }
+    public ModelAndView newModulePage(@AuthenticationPrincipal UserDetails user, ModelMap model) {
         Module module = new Module();
         module.setMdl_ID((long) 0);
-        module.setMdl_coordinator((Staff) user);
+        module.setMdl_coordinator(staffService.getUser(user));
         model.addAttribute("current_module", module);
         return new ModelAndView("/module/edit", model);
     }
 
     @GetMapping({"/info/{id}"})
-    public ModelAndView infoPage(ModelMap model, @PathVariable String id) {
+    public ModelAndView infoPage(@AuthenticationPrincipal UserDetails user, ModelMap model, @PathVariable String id) {
+        Student studentUser = null;
+        if (studentService.isStudent(user)) {
+            studentUser = studentService.getUser(user);
+        }
+        Staff staffUser = null;
+        if (staffService.isStaff(user)) {
+            staffUser = staffService.getUser(user);
+        }
+
+        model.addAttribute("student_user", studentUser);
+        model.addAttribute("staff_user", staffUser);
         model.addAttribute("current_module", moduleService.getModule(Long.parseLong(id)));
         return new ModelAndView("/module/info", model);
     }
@@ -94,26 +106,20 @@ public class ModuleController {
     }
 
     @GetMapping("/enroll/{id}")
-    public RedirectView enroll(HttpSession session, @PathVariable String id) {
-        Student student = (Student) session.getAttribute("student_user");
-        if (student == null) {
-            throw new IllegalCallerException("Trying to enroll with no student logged in");
-        }
+    public RedirectView enroll(@AuthenticationPrincipal UserDetails user, @PathVariable String id) {
+        Student student = studentService.getUser(user);
+
         Module module = moduleService.getModule(Long.parseLong(id));
         studentModuleService.enrollStudent(student, module);
-
         return new RedirectView("/student/profile");
     }
 
     @GetMapping("/unenroll/{id}")
-    public RedirectView unenroll(HttpSession session, @PathVariable String id) {
-        Student student = (Student) session.getAttribute("student_user");
-        if (student == null) {
-            throw new IllegalCallerException("Trying to enroll with no student logged in");
-        }
+    public RedirectView unenroll(@AuthenticationPrincipal UserDetails user, @PathVariable String id) {
+        Student student = studentService.getUser(user);
+
         Module module = moduleService.getModule(Long.parseLong(id));
         studentModuleService.unenrollStudent(student, module);
-
         return new RedirectView("/student/profile");
     }
 }

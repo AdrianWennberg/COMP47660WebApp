@@ -1,12 +1,14 @@
 package com.ed.webapp.service;
 
+import com.ed.webapp.WebSecurityConfig;
 import com.ed.webapp.model.*;
 import com.ed.webapp.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class StudentService {
@@ -20,25 +22,37 @@ public class StudentService {
     @Autowired
     StudentModuleService studentModuleService;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-
-    public List<Student> getAllStudents() {return repository.findAll();}
-
-    public List<Student> getStudentByUsername(String username) {return repository.findByUsername(username);}
-
     public void createStudent(Student new_student) {
-        new_student.setStd_password(bCryptPasswordEncoder.encode(new_student.getStd_password()));
+        new_student.setStd_password(WebSecurityConfig.encoder().encode(new_student.getStd_password()));
         repository.save(new_student);
     }
-    public boolean checkPassword(Student student){
-        List<Student>found=getStudentByUsername(student.getStd_username());
-        Student user=found.get(0);
-        return bCryptPasswordEncoder.matches(student.getStd_password(),user.getStd_password());
 
+    public boolean isStudent(UserDetails user) {
+        return user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_Student"));
     }
 
-    public long getStudentCount() {
-        return repository.count();
+    public Student getUser(UserDetails user) {
+        return getStudentByUsername(user.getUsername());
+    }
+
+    public boolean studentExists(String username) {
+        return repository.findByUsername(username).isPresent();
+    }
+
+    public Student getStudentByUsername(String username) {
+        return repository.findByUsername(username).orElseThrow();
+    }
+
+    public Student updateStudent(Student student) {
+        return repository.findById(student.getStd_ID()).orElseThrow();
+    }
+
+    public void payFees(Student user) {
+        for (Fees fees : user.getFees()) {
+            if (fees.getFee_year() == 2020) {
+                feesService.payFees(fees);
+            }
+        }
     }
 
     public void deleteStudent(Student student) {
@@ -53,18 +67,15 @@ public class StudentService {
 
         repository.delete(student);
     }
-    public Student getStudent(Student user) {
-        return repository.findById(user.getStd_ID()).orElseThrow();
-    }
 
-    public Student updateStudent(Student student) {
-        return getStudent(student);
+    public long getStudentCount() {
+        return repository.count();
     }
 
     public Map<String, Integer> getStudentCountByNationality() {
         HashMap<String, Integer> count = new HashMap<>();
 
-        for (Student student : getAllStudents()) {
+        for (Student student : repository.findAll()) {
             String nationality = student.getStd_nationality();
             Integer current = count.getOrDefault(nationality, 0);
             count.put(nationality, current + 1);
@@ -75,7 +86,7 @@ public class StudentService {
     public Map<String, Integer> getStudentCountByGender() {
         HashMap<String, Integer> count = new HashMap<>();
 
-        for (Student student : getAllStudents()) {
+        for (Student student : repository.findAll()) {
             String gender = student.getStd_sex().toString();
             Integer current = count.getOrDefault(gender, 0);
             count.put(gender, current + 1);
@@ -83,21 +94,4 @@ public class StudentService {
         return count;
     }
 
-    public Optional<Student> confirmLogin(Student login_details) {
-        List<Student> found = repository.findByUsername(login_details.getStd_username());
-        if (found.isEmpty()) {
-            return Optional.empty();
-        }
-        else if (found.size() > 1) {
-            throw new RuntimeException("Multiple users found with same username");
-        }
-
-        Student user = found.get(0);
-        if (bCryptPasswordEncoder.matches(login_details.getStd_password(), user.getStd_password())) {
-            return Optional.of(user);
-        }
-        else {
-            return Optional.empty();
-        }
-    }
 }

@@ -6,17 +6,17 @@ DELETE FROM student;
 
 INSERT INTO staff (stf_id, stf_username,stf_password,stf_name,stf_surname,stf_sex)
 VALUES
-    (1, 'test', 'pass', 'Test', 'User', 0),
-    (2, 'SEstrada','IAN56NYE7OT','Sonya','Estrada',1),
-    (3, 'CMcclure','WJX98AME2NB','Colin','Mcclure',0),
-    (4, 'DNieves','KAW45WDS1NN','Dillon','Nieves',0),
-    (5, 'ISosa','TRL69RRV4GV','India','Sosa',1),
-    (6, 'CEllis','XKE30ULX5YT','Connor','Ellis',0),
-    (7, 'PWatson','DYK21GYN8LN','Pascale','Watson',0),
-    (8, 'MPruitt','SMT89XOH5TN','MacKensie','Pruitt',1),
-    (9, 'ERogers','QVL96YJC4VW','Erin','Rogers',1),
-    (10, 'XPalmer','DJB13JBQ5EA','Xyla','Palmer',1),
-    (11, 'RHobbs','XOQ14HEO3CK','Reed','Hobbs',0);
+    (1, 'test', '$2a$10$E3zQ9R.sHWqUPUVt1RWLG.ATRXGkXr2HtfyAg/FawwM80kcsiizc.', 'Test', 'User', 0),
+    (2, 'SEstrada','$2a$10$Ouqt6xAL0E35bJSL7cvvAuOB/vxuNUaqehVkMnM4T0E7MqSyWlWRS','Sonya','Estrada',1),
+    (3, 'CMcclure','$2a$10$/l75d3WlpS3PEjWGDLUSm.UDz3lNGoRP7tmeJ6em5OSmKPxgRxnsq','Colin','Mcclure',0),
+    (4, 'DNieves','$2a$10$VwDP3ET8dPxxACstROs55OjKBtSLtt4paDfnNHQOliLPWqWmy3BCS','Dillon','Nieves',0),
+    (5, 'ISosa','$2a$10$Xca/gkyxDNJg4swH33OBv.akGijCWbB5/i/r6XALhcDWxTcXrWxuW','India','Sosa',1),
+    (6, 'CEllis','$2a$10$oyQhUwQ5FxZEg7xrh/2q0u8h3vgqldJ3Kp3DM11g5sHH0sJiTCdAi','Connor','Ellis',0),
+    (7, 'PWatson','$2a$10$CtKigDf5leL6vrvUYUWjruNSA.FQxaX9M1IoUtRFUoTzy2oxq4JJu','Pascale','Watson',0),
+    (8, 'MPruitt','$2a$10$rJ0.CC/L6JPOvN9cjjatQuocztvSzevtWb7f63AfRGngVQb3Pxbw2','MacKensie','Pruitt',1),
+    (9, 'ERogers','$2a$10$eT4s0f/HY0E5n/qQhD.GH.ct6UesfEcgCJOXR8MXc8PGE/LnQuTmq','Erin','Rogers',1),
+    (10, 'XPalmer','$2a$10$BuHmbZvPQUagvhQLM2jfbeYO9vtck15elwG/M4.OVb6d3iimt7O5W','Xyla','Palmer',1),
+    (11, 'RHobbs','$2a$10$h8yXGEr/8SQr09M4SdITwuY.IbtJXlS1C2BOFBxOdPfeA.yuG0wC2','Reed','Hobbs',0);
 
 
 insert into module (mdl_id, mdl_maxstd, mdl_name, mdl_topic, stf_id) values

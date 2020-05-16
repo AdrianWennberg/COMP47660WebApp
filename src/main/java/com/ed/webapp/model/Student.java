@@ -5,10 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -108,10 +105,6 @@ public class Student {
         this.std_password = std_passwrd;
     }
 
-    public boolean checkPassword(String password) {
-        return std_password.equals(password);
-    }
-
     public String getStd_name() {
         return std_name;
     }
@@ -178,6 +171,10 @@ public class Student {
 
     public boolean hasTakenModule(Module module) {
         return getModules().stream().anyMatch(studentModule -> studentModule.getStmd_module().equals(module));
+    }
+
+    public String getRole() {
+        return "Student";
     }
 
     @Override

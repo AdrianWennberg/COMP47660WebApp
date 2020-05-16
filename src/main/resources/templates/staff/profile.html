@@ -12,7 +12,7 @@
 </nav>
 <div class="container my-3">
     <div class="row">
-        <div class="col-6" th:object="${session.staff_user}">
+        <div class="col-6" th:object="${staff_user}">
             <h1>
                 <span th:text="*{getStf_username()}">JDoe</span>'s Profile
             </h1>
@@ -27,11 +27,11 @@
                 </li>
                 <li class="list-group-item">
                     <span class="font-weight-bold">Gender:</span>
-                    <span th:text="${#strings.toLowerCase(session.staff_user.getStf_sex())}">male</span>
+                    <span th:text="${#strings.toLowerCase(staff_user.getStf_sex())}">male</span>
                 </li>
             </ul>
         </div>
-        <div class="col-6" th:object="${session.staff_user}">
+        <div class="col-6" th:object="${staff_user}">
             <table class="table">
                 <thead class="thead-dark">
                 <tr>

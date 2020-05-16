@@ -130,6 +130,10 @@ public class Staff {
                 '}';
     }
 
+    public String getRole() {
+        return "Staff";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

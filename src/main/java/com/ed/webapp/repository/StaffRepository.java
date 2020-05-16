@@ -5,12 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, Long> {
 
     @Query(value = "SELECT * from staff where stf_username = ?1", nativeQuery = true)
-    List<Staff> findByUsername(String username);
+    Optional<Staff> findByUsername(String username);
 }
 

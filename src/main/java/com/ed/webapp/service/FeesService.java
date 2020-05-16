@@ -14,4 +14,9 @@ public class FeesService {
     public void deleteFees(Fees fees) {
         repository.delete(fees);
     }
+
+    public void payFees(Fees fees) {
+        fees.setPaid(true);
+        repository.save(fees);
+    }
 }

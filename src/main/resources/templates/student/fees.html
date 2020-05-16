@@ -12,9 +12,9 @@
 </nav>
 <div class="container my-3">
     <div class="row">
-        <div class="col-6" th:object="${session.student_user}">
+        <div class="col-6">
             <h1>
-                <span th:text="*{getStd_name()}">JDoe</span>'s Fees
+                <span th:text="${username}">JDoe</span>'s Fees
             </h1>
 
 
@@ -23,7 +23,12 @@
                     <label>Current Fees:</label>
                     <span th:text="${current_fees.getFee_amount()}"></span>
 
-                    <a th:if="${!current_fees.isPaid()}" th:href="@{/student/pay/}">Pay Fees</a>
+                    <form th:if="${!current_fees.isPaid()}" method="post" th:action="@{/student/pay}">
+                        <button type="submit" name="submit" value="submit_value" class="link-button">
+                            Pay Fees
+                        </button>
+                    </form>
+
                     <span th:if="${current_fees.isPaid()}">Fees paid</span>
                 </li>
                 <li th:each="f : ${previous_fees}" class="list-group-item">

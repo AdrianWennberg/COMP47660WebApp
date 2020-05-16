@@ -11,15 +11,6 @@ import java.util.List;
 public class StudentModuleService {
     @Autowired
     StudentModuleRepository repository;
-    //ModuleRepository moduleRepository;
-
-    public List<StudentModule> getModulebyStudent(long std_id) {
-        return repository.findByStd_id(std_id);
-    }
-
-    public String getModuleName(Module module) {
-        return module.getMdl_name();
-    }
 
     public void updateGrades(List<StudentModule> students) {
         for (StudentModule student : students) {

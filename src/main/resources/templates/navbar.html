@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head th:fragment="headerfiles">
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -13,21 +14,25 @@
     <a class="navbar-brand mr-auto" href="/"> University Of Springfield</a>
     <ul class="navbar-nav">
 
-        <li th:if="${session.staff_user} != null and ${session.student_user} == null" class="nav-item">
+        <li class="nav-item" sec:authorize="hasRole('Staff')">
             <a class="nav-link" href="/staff/profile">Profile</a>
         </li>
-        <li th:if="${session.staff_user} == null and ${session.student_user} == null" class="nav-item">
-            <a class="nav-link" href="/staff/login">Staff</a>
+        <li sec:authorize="hasRole('Staff')" class="nav-item">
+            <!--suppress HtmlUnknownTarget -->
+            <a class="nav-link" href="/staff/logout">Log out</a>
         </li>
-        <li th:if="${session.staff_user} == null and ${session.student_user} != null" class="nav-item">
+        <li sec:authorize="hasRole('Student')" class="nav-item">
             <a class="nav-link" href="/student/profile">Profile</a>
         </li>
-        <li th:if="${session.staff_user} == null and ${session.student_user} == null" class="nav-item">
-            <a class="nav-link" href="/student/login">Student</a>
+        <li sec:authorize="hasRole('Student')" class="nav-item">
+            <!--suppress HtmlUnknownTarget -->
+            <a class="nav-link" href="/student/logout">Log out</a>
         </li>
-
-        <li th:if="${session.staff_user} != null or ${session.student_user} != null" class="nav-item">
-            <a class="nav-link" href="/logout">Log out</a>
+        <li class="nav-item" sec:authorize="isAnonymous()">
+            <a class="nav-link" href="/staff/login">Staff</a>
+        </li>
+        <li sec:authorize="isAnonymous()" class="nav-item">
+            <a class="nav-link" href="/student/login">Student</a>
         </li>
     </ul>
 </nav>

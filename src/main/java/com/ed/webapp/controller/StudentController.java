@@ -2,12 +2,12 @@ package com.ed.webapp.controller;
 
 import com.ed.webapp.model.Fees;
 import com.ed.webapp.model.Student;
-import com.ed.webapp.repository.FeesRepository;
 import com.ed.webapp.repository.StudentRepository;
 import com.ed.webapp.service.CheckRegistrationService;
-import com.ed.webapp.service.StudentModuleService;
 import com.ed.webapp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -24,13 +24,8 @@ import java.util.*;
 public class StudentController {
     @Autowired
     StudentRepository studentRepository;
-    StudentModuleService studentModuleService;
     @Autowired
     StudentService studentService;
-    @Autowired
-    FeesRepository feeRepository;
-
-
 
     @GetMapping("/data")
     @ResponseBody
@@ -39,96 +34,78 @@ public class StudentController {
 
         studentData.put("nationalities", studentService.getStudentCountByNationality());
         studentData.put("genders", studentService.getStudentCountByGender());
-
         return studentData;
     }
 
     @GetMapping("/login")
-    public ModelAndView loginPage(ModelMap model, HttpSession session) {
-        if (session.getAttribute("student_user") != null) {
-            return new ModelAndView(new RedirectView("/student/profile"));
+    public ModelAndView loginPage(@AuthenticationPrincipal UserDetails user) {
+        if (user != null) {
+            return new ModelAndView(new RedirectView("/"));
         }
-        model.addAttribute("student", new Student());
-        return new ModelAndView("student/login", model);
+        return new ModelAndView("/student/login");
     }
 
     @GetMapping("/profile")
-    public ModelAndView profilePage(ModelMap model, HttpSession session) {
-        Student user = (Student) session.getAttribute("student_user");
-        if (user == null) {
-            return new ModelAndView(new RedirectView("/student/login"));
-        }
-        user = studentService.updateStudent(user);
-        session.setAttribute("student_user", user);
+    public ModelAndView profilePage(@AuthenticationPrincipal UserDetails user, ModelMap model) {
+        Student student = studentService.getUser(user);
+        student = studentService.updateStudent(student);
+
+        model.addAttribute("student_user", student);
         return new ModelAndView("/student/profile", model);
     }
 
     @GetMapping("/registration")
-    public ModelAndView registrationPage(ModelMap model, HttpSession session) {
+    public ModelAndView registrationPage(ModelMap model) {
         Student student = new Student();
         model.addAttribute("current_student", student);
         return new ModelAndView("/student/registration", model);
     }
+
     CheckRegistrationService checkRegistrationService=new CheckRegistrationService();
+
     @PostMapping("/registration")
-    public RedirectView createStudent(ModelMap model, HttpSession session, @Valid @ModelAttribute Student student, BindingResult bindingResult) {
-        List<Student> found = studentRepository.findByUsername(student.getStd_username());
-        if(bindingResult.hasErrors()) {
-            System.out.println("errore");
+    public RedirectView createStudent(ModelMap model, @Valid @ModelAttribute Student student, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            System.out.println("error");
             model.addAttribute("registration_error", "Incorrect registration!");
             return new RedirectView("/student/registration");
         }
-        if(checkRegistrationService.checkFields(student) && found.isEmpty() ){//&& studentService.getStudent(student)!=null){
-                System.out.println(student);
-                studentService.createStudent(student);
-                return new RedirectView("/student/login");
-        }
-        else {
+
+        if (!studentService.studentExists(student.getStd_username())) {
             model.addAttribute("registration_error", "Incorrect registration!");
             return new RedirectView("/student/registration");
         }
+
+        if (!checkRegistrationService.checkFields(student)) {
+            model.addAttribute("registration_error", "Incorrect registration!");
+            return new RedirectView("/student/registration");
+        }
+
+        studentService.createStudent(student);
+        return new RedirectView("/student/login");
     }
 
     @GetMapping("/unregister")
-    public ModelAndView unregisterPage(HttpSession session) {
-        if (session.getAttribute("student_user") == null) {
-            return new ModelAndView(new RedirectView("/student/login"));
-        }
+    public ModelAndView unregisterPage() {
         return new ModelAndView("/student/unregister");
     }
 
     @PostMapping("/unregister")
-    public ModelAndView Unregister(HttpSession session) {
-        Student student = (Student) session.getAttribute("student_user");
-        if (student == null) {
-            return new ModelAndView(new RedirectView("/student/login"));
-        }
+    public ModelAndView Unregister(@AuthenticationPrincipal UserDetails user, HttpSession session) {
+        Student student = studentService.getUser(user);
         studentService.deleteStudent(student);
-        session.removeAttribute("student_user");
+
+        session.invalidate();
         return new ModelAndView(new RedirectView("/"));
     }
 
-    @PostMapping("/login")
-    public ModelAndView login(ModelMap model, HttpSession session, @ModelAttribute Student student) {
-        Optional<Student> studentOptional = studentService.confirmLogin(student);
-        if (studentOptional.isEmpty()) {
-
-            model.addAttribute("login_error", "Incorrect login!");
-            return new ModelAndView("/student/login", model);
-        }
-
-        session.setAttribute("student_user", studentOptional.get());
-        return new ModelAndView(new RedirectView("/student/profile"));
-    }
-
     @GetMapping("/fees")
-    public ModelAndView studentFeesPage(ModelMap model, HttpSession session) {
-        Student user = (Student) session.getAttribute("student_user");
-        if (session.getAttribute("student_user") == null) {
-            return new ModelAndView(new RedirectView("/student/login"));
-        }
+    public ModelAndView studentFeesPage(@AuthenticationPrincipal UserDetails user, ModelMap model) {
+        Student student = studentService.getUser(user);
+
         List<Fees> previousFees = new LinkedList<>();
-        for (Fees fee : feeRepository.findByFee_student(user)) {
+        for (Fees fee : student.getFees()) {
             if (fee.getFee_year() != 2020) {
                 previousFees.add(fee);
             }
@@ -137,23 +114,15 @@ public class StudentController {
             }
         }
         model.addAttribute("previous_fees", previousFees);
+        model.addAttribute("username", student.getStd_username());
         return new ModelAndView("/student/fees", model);
     }
 
-    @GetMapping("/pay/")
-    public RedirectView payFees(HttpSession session) {
-        Student user = (Student) session.getAttribute("student_user");
-        if (user == null) {
-            return new RedirectView("/student/login");
-        }
-        user = studentService.getStudent(user);
-        for (Fees fee : feeRepository.findByFee_student(user)) {
-            if (fee.getFee_year() == 2020) {
-                fee.setPaid(true);
-                fee.setFee_student(user);
-                feeRepository.save(fee);
-            }
-        }
+    @PostMapping("/pay")
+    public RedirectView payFees(@AuthenticationPrincipal UserDetails user) {
+        Student student = studentService.getUser(user);
+
+        studentService.payFees(student);
         return new RedirectView("/student/fees");
     }
 }

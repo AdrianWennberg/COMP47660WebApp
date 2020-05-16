@@ -10,7 +10,7 @@
 <nav class="navbar navbar-dark bg-dark" th:replace="navbar.html :: header"><span
         class="navbar-text">Navbar Placeholder</span>
 </nav>
-<div class="container my-3" th:object="${session.student_user}">
+<div class="container my-3" th:object="${student_user}">
     <div class="row">
         <div class="col-6">
             <h1>
@@ -31,7 +31,7 @@
                 </li>
                 <li class="list-group-item">
                     <span class="font-weight-bold">Gender:</span>
-                    <span th:text="${#strings.toLowerCase(session.student_user.getStd_sex())}"></span>
+                    <span th:text="${#strings.toLowerCase(student_user.getStd_sex())}"></span>
                 </li>
                 <li class="list-group-item">
                     <span class="font-weight-bold">Address:</span>

@@ -14,22 +14,22 @@
     <div class="row  justify-content-start">
          <div class="col-6">
             <h1>Student Login</h1>
-            <form action="#" th:action="@{/student/login}" th:object="${student}" method="post">
+            <form th:action="@{/student/login}" method="POST">
                 <div class="form-group">
                     <label>
                         Username:
-                        <input type="text" class="form-control" th:field="*{std_username}"/>
+                        <input type="text" name="username" class="form-control"/>
                     </label>
                     <label>
                         Password:
-                        <input type="password" class="form-control" th:field="*{std_password}"/>
+                        <input type="password" name="password" class="form-control"/>
                     </label>
-                    <input type="submit" value="Login"/>
-                    <div th:if="${login_error != null}" th:text="${login_error}" class="alert-danger my-2 p-1">
-                        <span class="text-danger">Static summary</span>
-                    </div>
+                    <input type="submit" name="submit" value="Login"/>
                 </div>
             </form>
+             <div th:if="${param.error}" class="alert-danger my-2 p-1">
+                 <span class="text-danger">Login failed!</span>
+             </div>
              <a href="/student/registration">Register a new user</a>
          </div>
     </div>
