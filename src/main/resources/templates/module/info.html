@@ -95,13 +95,21 @@
             <h3>
                 Enroll to module
             </h3>
-            <span th:if="${student_user.hasTakenModule(current_module)}">
-                You are already enrolled or have taken this module in the past</span>
-            <a th:if="${!student_user.hasTakenModule(current_module)}"
-               href="/module/info/1"
-               th:href="@{/module/enroll/{id}(id=${current_module.getMdl_ID()})}">
-                <button type="button">Enroll</button>
-            </a>
+            <div th:if="${student_user.hasTakenModule(current_module)}">
+                <span> You are already enrolled or have taken this module in the past</span>
+                <form th:action="@{/module/unenroll}" th:if="${student_user.isTakingModule(current_module)}"
+                      action="/module/unenroll" method="post">
+                    <input type="hidden" name="id" th:value="${current_module.getMdl_ID()}">
+                    <button type="submit" name="submit">Leave Module</button>
+                </form>
+            </div>
+
+            <form th:if="${!student_user.hasTakenModule(current_module)}" method="post" th:action="@{/module/enroll}">
+                <input type="hidden" name="id" th:value="${current_module.getMdl_ID()}">
+                <button type="submit" name="submit" value="submit_value" class="link-button">
+                    Enroll
+                </button>
+            </form>
         </div>
     </div>
 </div>

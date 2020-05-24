@@ -59,7 +59,7 @@ public class WebSecurityConfig {
                 .permitAll()
                 .antMatchers("/module/edit/*", "/module/grades/*")
                 .hasRole("Staff")
-                .antMatchers("/module/enroll**", "/module/unenroll**")
+                .antMatchers("/module/enroll", "/module/unenroll")
                 .hasRole("Student")
                 .anyRequest()
                 .authenticated();

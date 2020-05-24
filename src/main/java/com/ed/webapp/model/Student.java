@@ -173,6 +173,12 @@ public class Student {
         return getModules().stream().anyMatch(studentModule -> studentModule.getStmd_module().equals(module));
     }
 
+    public boolean isTakingModule(Module module) {
+        return getModules().stream()
+                           .anyMatch(studentModule -> studentModule.getStmd_module().equals(module) &&
+                                   studentModule.getStmd_year() == 2020);
+    }
+
     public String getRole() {
         return "Student";
     }

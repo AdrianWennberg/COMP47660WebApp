@@ -122,8 +122,8 @@ public class ModuleController {
         return new RedirectView("/module/grades/" + id + "/" + year);
     }
 
-    @GetMapping("/enroll/{id}")
-    public RedirectView enroll(@AuthenticationPrincipal UserDetails user, @PathVariable String id) {
+    @PostMapping("/enroll")
+    public RedirectView enroll(@AuthenticationPrincipal UserDetails user, @RequestParam String id) {
         Student student = studentService.getUser(user);
 
         Module module = moduleService.getModule(Long.parseLong(id));
@@ -131,8 +131,8 @@ public class ModuleController {
         return new RedirectView("/student/profile");
     }
 
-    @GetMapping("/unenroll/{id}")
-    public RedirectView unenroll(@AuthenticationPrincipal UserDetails user, @PathVariable String id) {
+    @PostMapping("/unenroll")
+    public RedirectView unenroll(@AuthenticationPrincipal UserDetails user, @RequestParam String id) {
         Student student = studentService.getUser(user);
 
         Module module = moduleService.getModule(Long.parseLong(id));
