@@ -77,9 +77,14 @@ public class ModuleController {
     }
 
     @PostMapping("/edit/{id}")
-    public RedirectView editModule(Model model, @PathVariable String id, @ModelAttribute Module module) {
+    public RedirectView editModule(@AuthenticationPrincipal UserDetails user,Model model, @PathVariable String id, @ModelAttribute Module module) {
+        Staff staff = staffService.getUser(user);
+        if(moduleService.checkStaff(module,staff)){
+            logger.info(staff.getStf_username() + " tried to edit the info of "+ module.getMdl_name());
+            return new RedirectView("/staff/profile");
+        }
         Module updated = moduleService.updateModule(Long.parseLong(id), module);
-        logger.info("edited info of "+ module.getMdl_name());//we have to check the staff name
+        logger.info(staff.getStf_username() + " edited the info of "+ module.getMdl_name());
         model.addAttribute("current_module", updated);
         return new RedirectView("/module/edit/" + updated.getMdl_ID());
     }
@@ -106,8 +111,14 @@ public class ModuleController {
     }
 
     @PostMapping("/grades/{id}/{year}")
-    public RedirectView moduleGrades(@PathVariable String id, @ModelAttribute Module module, @PathVariable String year) {
-        studentModuleService.updateGrades(module.getStudents());
+    public RedirectView moduleGrades(@AuthenticationPrincipal UserDetails user,@PathVariable String id, @ModelAttribute Module module, @PathVariable String year) {
+        Staff staff = staffService.getUser(user);
+        if(moduleService.checkStaff(module, staff)){
+            logger.info(staff.getStf_username() + " tried to edit the grades of "+ module.getMdl_name());
+            return new RedirectView("/");
+        }
+        studentModuleService.updateGrades(module.getStudents(),staff);
+        logger.info(staff.getStf_username() + " edited the grades of "+ module.getMdl_name());
         return new RedirectView("/module/grades/" + id + "/" + year);
     }
 

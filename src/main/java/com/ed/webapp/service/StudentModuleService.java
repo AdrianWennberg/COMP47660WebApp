@@ -3,6 +3,8 @@ package com.ed.webapp.service;
 import com.ed.webapp.model.Module;
 import com.ed.webapp.model.*;
 import com.ed.webapp.repository.StudentModuleRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +14,15 @@ public class StudentModuleService {
     @Autowired
     StudentModuleRepository repository;
 
-    public void updateGrades(List<StudentModule> students) {
+    private static final Logger logger = LoggerFactory.getLogger(StudentModuleService.class);
+
+    public void updateGrades(List<StudentModule> students,Staff staff) {
         for (StudentModule student : students) {
             if (student.getId() != null) {
                 StudentModule current = repository.findById(student.getId()).orElseThrow();
                 current.setGrade(student.getGrade());
                 repository.save(current);
+                logger.info(staff.getStf_username() + " changed the grade of "+ student.getId());
             }
         }
     }

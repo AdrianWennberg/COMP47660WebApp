@@ -1,6 +1,7 @@
 package com.ed.webapp.service;
 
 import com.ed.webapp.model.Module;
+import com.ed.webapp.model.Staff;
 import com.ed.webapp.repository.ModuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,9 @@ public class ModuleService {
 
     public long getModuleCount() {
         return repository.count();
+    }
+
+    public boolean checkStaff(Module module, Staff staff) {
+        return module.getMdl_coordinator().equals(staff);
     }
 }
