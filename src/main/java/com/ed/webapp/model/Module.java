@@ -3,7 +3,6 @@ package com.ed.webapp.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,9 +14,9 @@ public class Module {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private Long mdl_ID;
-    @NotBlank
+    //@NotBlank
     private String mdl_name;
-    @NotBlank
+    //@NotBlank
     private String mdl_topic;
     @NotNull
     @ManyToOne

@@ -1,8 +1,12 @@
 package com.ed.webapp.service;
 
 import com.ed.webapp.WebSecurityConfig;
-import com.ed.webapp.model.*;
+import com.ed.webapp.model.Fees;
+import com.ed.webapp.model.Student;
+import com.ed.webapp.model.StudentModule;
 import com.ed.webapp.repository.StudentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -21,6 +25,8 @@ public class StudentService {
 
     @Autowired
     StudentModuleService studentModuleService;
+
+    private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     public void createStudent(Student new_student) {
         new_student.setStd_password(WebSecurityConfig.encoder().encode(new_student.getStd_password()));
@@ -50,7 +56,9 @@ public class StudentService {
     public void payFees(Student user) {
         for (Fees fees : user.getFees()) {
             if (fees.getFee_year() == 2020) {
+                logger.info(user.getStd_username()+" paid the fees");
                 feesService.payFees(fees);
+
             }
         }
     }

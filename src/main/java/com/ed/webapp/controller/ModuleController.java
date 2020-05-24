@@ -3,6 +3,8 @@ package com.ed.webapp.controller;
 import com.ed.webapp.model.Module;
 import com.ed.webapp.model.*;
 import com.ed.webapp.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +29,8 @@ public class ModuleController {
     @Autowired
     public StudentService studentService;
 
+    private static final Logger logger = LoggerFactory.getLogger(ModuleController.class);
+
     // Broken module search
 //    @GetMapping("/module/{topic}")
 //    public ModelAndView moduleList(ModelMap model, @PathVariable String topic) {
@@ -45,6 +49,7 @@ public class ModuleController {
         module.setMdl_ID((long) 0);
         module.setMdl_coordinator(staffService.getUser(user));
         model.addAttribute("current_module", module);
+        logger.info(user.getUsername()+" is creating a new module ");
         return new ModelAndView("/module/edit", model);
     }
 
@@ -74,6 +79,7 @@ public class ModuleController {
     @PostMapping("/edit/{id}")
     public RedirectView editModule(Model model, @PathVariable String id, @ModelAttribute Module module) {
         Module updated = moduleService.updateModule(Long.parseLong(id), module);
+        logger.info("edited info of "+ module.getMdl_name());//we have to check the staff name
         model.addAttribute("current_module", updated);
         return new RedirectView("/module/edit/" + updated.getMdl_ID());
     }

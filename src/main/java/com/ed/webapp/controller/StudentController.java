@@ -17,7 +17,10 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/student")
@@ -26,6 +29,7 @@ public class StudentController {
     StudentRepository studentRepository;
     @Autowired
     StudentService studentService;
+
 
     @GetMapping("/data")
     @ResponseBody
@@ -44,6 +48,7 @@ public class StudentController {
         }
         return new ModelAndView("/student/login");
     }
+
 
     @GetMapping("/profile")
     public ModelAndView profilePage(@AuthenticationPrincipal UserDetails user, ModelMap model) {
