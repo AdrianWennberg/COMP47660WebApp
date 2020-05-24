@@ -1,26 +1,39 @@
 package com.ed.webapp;
 
+import com.ed.webapp.security.AuthenticationFailureEventListener;
+import com.ed.webapp.security.AuthenticationSuccessEventListener;
 import com.ed.webapp.service.StaffUserDetailsService;
 import com.ed.webapp.service.StudentUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextListener;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+
+
+    @Bean
+    public AuthenticationSuccessEventListener loginSuccessListener(){
+        return new AuthenticationSuccessEventListener();
+    }
+    @Bean
+    public AuthenticationFailureEventListener loginFailureListener(){
+        return new AuthenticationFailureEventListener();
+    }
+    @Bean
+    public RequestContextListener requestContextListener(){
+        return new RequestContextListener();
+    }
 
     @Bean
     public static PasswordEncoder encoder() {
@@ -119,14 +132,47 @@ public class WebSecurityConfig {
                 .disable();
         }
     }
-
+/*
     @Component
-    public static class AuthenticationFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
+    public static class AuthenticationFailureEventListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 
+        /*
         public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent e) {
             WebAuthenticationDetails auth = (WebAuthenticationDetails) e.getAuthentication().getDetails();
 
             System.out.println("Login failed: " + auth.getSessionId());
         }
+
+
+        @Autowired
+        private LoginAttemptService loginAttemptService;
+
+
+        public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent e) {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                    .getRequest();
+            loginAttemptService.loginFailed(request.getRemoteAddr());
+            System.out.println("Login failed: " + request);
+        }
     }
+
+    @Component
+    public class AuthenticationSuccessEventListener implements ApplicationListener<AuthenticationSuccessEvent> {
+
+        @Autowired
+        private HttpServletRequest request;
+        @Autowired
+        private  LoginAttemptService loginAttemptService;
+
+
+        public void onApplicationEvent(AuthenticationSuccessEvent e) {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                    .getRequest();
+            loginAttemptService.loginSucceeded(request.getRemoteAddr());
+            System.out.println("Login successful: " + request);
+        }
+    }
+
+ */
 }
+
