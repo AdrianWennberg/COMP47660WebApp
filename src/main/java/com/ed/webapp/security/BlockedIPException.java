@@ -1,8 +1,8 @@
 package com.ed.webapp.security;
 
-public class BlockedIPException extends RuntimeException{
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-    public synchronized Throwable fillInStackTrace()  { return this; }
+public class BlockedIPException extends UsernameNotFoundException {
 
     public BlockedIPException(String errorMessage) {
         super(errorMessage);

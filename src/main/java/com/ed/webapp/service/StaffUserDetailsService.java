@@ -31,16 +31,16 @@ public class StaffUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         Optional<Staff> user = repository.findByUsername(username);
-
+        String ip = getClientIP();
+        if (loginAttemptService.isBlocked(ip)) {
+            logger.info(" blocked IP: "+ip);
+            throw new BlockedIPException("blocked IP: "+ip);
+        }
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found by name: " + username);
         }
-        String ip = getClientIP();
-        if (loginAttemptService.isBlocked(ip)) {
-            throw new BlockedIPException("blocked IP: "+ip);
-        }
         Staff staff = user.get();
-        logger.info("the staff "+ username+" logins");
+        //logger.info("the staff "+ username+" logins");
         return User.withUsername(staff.getStf_username())
                    .password(staff.getStf_password())
                    .roles(staff.getRole())

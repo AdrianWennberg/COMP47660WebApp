@@ -33,18 +33,18 @@ public class StudentUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         Optional<Student> user = repository.findByUsername(username);
-
-        if (user.isEmpty()) {
-            logger.info(username+"tried to login in");
-            throw new UsernameNotFoundException("User not found by name: " + username);
-        }
-
         String ip = getClientIP();
         if (loginAttemptService.isBlocked(ip)) {
+            logger.info(" blocked IP: "+ip);
             throw new BlockedIPException("blocked IP: "+ip);
+
+        }
+        if (user.isEmpty()) {
+            logger.info(username+" tried to login in");
+            throw new UsernameNotFoundException("User not found by name: " + username);
         }
         Student student = user.get();
-        //logger.info(username+" logins");
+        //logger.info(username+" logins ");
         return User.withUsername(student.getStd_username())
                    .password(student.getStd_password())
                    .roles(student.getRole())
