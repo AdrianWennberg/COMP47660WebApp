@@ -8,28 +8,19 @@ import org.springframework.security.authentication.event.AuthenticationSuccessEv
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Component
 public class AuthenticationSuccessEventListener implements ApplicationListener<AuthenticationSuccessEvent> {
 
     @Autowired
-    private HttpServletRequest request;
-    @Autowired
-    private  LoginAttemptService loginAttemptService;
+    private LoginAttemptService loginAttemptService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationSuccessEventListener.class);
 
-
-
     public void onApplicationEvent(AuthenticationSuccessEvent e) {
-
-        WebAuthenticationDetails auth = (WebAuthenticationDetails)
-                e.getAuthentication().getDetails();
+        WebAuthenticationDetails auth = (WebAuthenticationDetails) e.getAuthentication().getDetails();
 
         loginAttemptService.loginSucceeded(auth.getRemoteAddress());
-        logger.info("Login successful by IP " + auth.getRemoteAddress());
-
+        logger.info("Login successful by IP: " + auth.getRemoteAddress());
     }
 
 }
