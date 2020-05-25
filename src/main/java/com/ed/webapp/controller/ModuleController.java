@@ -31,18 +31,6 @@ public class ModuleController {
 
     private static final Logger logger = LoggerFactory.getLogger(ModuleController.class);
 
-    // Broken module search
-//    @GetMapping("/module/{topic}")
-//    public ModelAndView moduleList(ModelMap model, @PathVariable String topic) {
-//        List<Module> moduleList = moduleService.getModuleByTopic(topic);
-//        if (moduleList.isEmpty()) {
-//            model.addAttribute("module error", "no modules finded");
-//            return new ModelAndView(new RedirectView("/student/profile"));
-//        }
-//        model.addAttribute("modules", moduleList);
-//        return new ModelAndView("/module/{topic}", model);
-//    }
-
     @GetMapping({"/edit/", "/edit"})
     public ModelAndView newModulePage(@AuthenticationPrincipal UserDetails user, ModelMap model) {
         Module module = new Module();
@@ -147,6 +135,7 @@ public class ModuleController {
         Student student = studentService.getUser(user);
 
         Module module = moduleService.getModule(Long.parseLong(id));
+        logger.info("User enrolled to module: " + student + ", " + module);
         studentModuleService.enrollStudent(student, module);
         return new RedirectView("/student/profile");
     }
@@ -156,6 +145,7 @@ public class ModuleController {
         Student student = studentService.getUser(user);
 
         Module module = moduleService.getModule(Long.parseLong(id));
+        logger.info("User unenrolled from module: " + student + ", " + module);
         studentModuleService.unenrollStudent(student, module);
         return new RedirectView("/student/profile");
     }
