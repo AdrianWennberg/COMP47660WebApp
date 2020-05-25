@@ -81,7 +81,7 @@ public class StudentController {
             return new RedirectView("/student/registration");
         }
 
-        if (!studentService.studentExists(student.getStd_username())) {
+        if (studentService.studentExists(student.getStd_username())) {
             logger.info("Registration failed");
             model.addAttribute("registration_error", "Incorrect registration!");
             return new RedirectView("/student/registration");
