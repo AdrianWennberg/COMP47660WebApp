@@ -19,10 +19,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/student")
@@ -108,6 +105,7 @@ public class StudentController {
         Student student = studentService.getUser(user);
         studentService.deleteStudent(student);
 
+        logger.info(student.getStd_username() + " is unregistered");
         session.invalidate();
         return new ModelAndView(new RedirectView("/"));
     }
@@ -133,7 +131,6 @@ public class StudentController {
     @PostMapping("/pay")
     public RedirectView payFees(@AuthenticationPrincipal UserDetails user) {
         Student student = studentService.getUser(user);
-
         studentService.payFees(student);
         return new RedirectView("/student/fees");
     }
