@@ -37,6 +37,11 @@ public class StudentModuleID implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "StudentModuleID{" + "studentID=" + stmd_student_id + ", moduleID=" + stmd_module_id + '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

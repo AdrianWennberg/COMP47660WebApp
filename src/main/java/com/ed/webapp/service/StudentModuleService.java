@@ -20,9 +20,19 @@ public class StudentModuleService {
         for (StudentModule student : students) {
             if (student.getId() != null) {
                 StudentModule current = repository.findById(student.getId()).orElseThrow();
+                if (current.getGrade() == student.getGrade()) {
+                    continue;
+                }
+
+                logger.info(staff.getStf_username() +
+                                    " changed the grade of " +
+                                    student.getId() +
+                                    " from " +
+                                    current.getGrade() +
+                                    " to " +
+                                    student.getGrade());
                 current.setGrade(student.getGrade());
                 repository.save(current);
-                logger.info(staff.getStf_username() + " changed the grade of "+ student.getId());
             }
         }
     }

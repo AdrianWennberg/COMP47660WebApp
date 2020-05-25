@@ -82,4 +82,18 @@ public class StudentModule {
     public void setGrade(double grade) {
         this.grade = grade;
     }
+
+    @Override
+    public String toString() {
+        return "StudentModule{" +
+                "id=" +
+                id +
+                ", year=" +
+                stmd_year +
+                ", semester=" +
+                stmd_semester +
+                ", grade=" +
+                grade +
+                '}';
+    }
 }

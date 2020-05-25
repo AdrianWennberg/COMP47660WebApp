@@ -171,4 +171,8 @@ public class Module {
     public int hashCode() {
         return Objects.hash(mdl_ID);
     }
+
+    public boolean isNotCoordinator(Staff staff) {
+        return !getMdl_coordinator().equals(staff);
+    }
 }

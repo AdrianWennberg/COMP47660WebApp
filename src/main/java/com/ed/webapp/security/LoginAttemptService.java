@@ -1,22 +1,19 @@
 package com.ed.webapp.security;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import com.google.common.cache.*;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class LoginAttemptService {
-    private final int MAX_ATTEMPT = 10;
-    private LoadingCache<String, Integer> attemptsCache;
+    private final int MAX_ATTEMPT = 3;
+    private final int HOURS_BLOCKED = 1;
+    private final LoadingCache<String, Integer> attemptsCache;
 
     public LoginAttemptService() {
-        super();
         attemptsCache = CacheBuilder.newBuilder().
-                expireAfterWrite(1, TimeUnit.HOURS).build(new CacheLoader<String, Integer>() {
+                expireAfterWrite(HOURS_BLOCKED, TimeUnit.HOURS).build(new CacheLoader<>() {
             public Integer load(String key) {
                 return 0;
             }
@@ -28,21 +25,15 @@ public class LoginAttemptService {
     }
 
     public void loginFailed(String key) {
-        int attempts = 0;
-        try {
-            attempts = attemptsCache.get(key);
-        } catch (ExecutionException e) {
+        Integer attempts = attemptsCache.getIfPresent(key);
+        if (attempts == null) {
             attempts = 0;
         }
-        attempts++;
-        attemptsCache.put(key, attempts);
+        attemptsCache.put(key, attempts + 1);
     }
 
     public boolean isBlocked(String key) {
-        try {
-            return attemptsCache.get(key) >= MAX_ATTEMPT;
-        } catch (ExecutionException e) {
-            return false;
-        }
+        Integer attempts = attemptsCache.getIfPresent(key);
+        return attempts != null && attempts >= MAX_ATTEMPT;
     }
 }

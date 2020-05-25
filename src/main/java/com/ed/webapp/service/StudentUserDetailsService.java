@@ -7,10 +7,7 @@ import com.ed.webapp.security.LoginAttemptService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,9 +32,8 @@ public class StudentUserDetailsService implements UserDetailsService {
         Optional<Student> user = repository.findByUsername(username);
         String ip = getClientIP();
         if (loginAttemptService.isBlocked(ip)) {
-            logger.info(" blocked IP: "+ip);
-            throw new BlockedIPException("blocked IP: "+ip);
-
+            logger.info("Login attempt from blocked ip IP: " + ip + " With username: " + username);
+            throw new BlockedIPException("Login attempt from blocked ip IP: " + ip + " With username: " + username);
         }
         if (user.isEmpty()) {
             logger.info(username+" tried to login in");

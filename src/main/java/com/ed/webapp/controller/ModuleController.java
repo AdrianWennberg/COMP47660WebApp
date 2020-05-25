@@ -49,48 +49,62 @@ public class ModuleController {
         module.setMdl_ID((long) 0);
         module.setMdl_coordinator(staffService.getUser(user));
         model.addAttribute("current_module", module);
-        logger.info(user.getUsername()+" is creating a new module ");
+        logger.info(user.getUsername() + " is creating a new module.");
         return new ModelAndView("/module/edit", model);
     }
 
     @GetMapping({"/info/{id}"})
     public ModelAndView infoPage(@AuthenticationPrincipal UserDetails user, ModelMap model, @PathVariable String id) {
-        Student studentUser = null;
-        if (studentService.isStudent(user)) {
-            studentUser = studentService.getUser(user);
-        }
-        Staff staffUser = null;
-        if (staffService.isStaff(user)) {
-            staffUser = staffService.getUser(user);
+        if (user != null) {
+            if (studentService.isStudent(user)) {
+                model.addAttribute("student_user", studentService.getUser(user));
+            }
+            else if (staffService.isStaff(user)) {
+                model.addAttribute("staff_user", staffService.getUser(user));
+            }
         }
 
-        model.addAttribute("student_user", studentUser);
-        model.addAttribute("staff_user", staffUser);
         model.addAttribute("current_module", moduleService.getModule(Long.parseLong(id)));
         return new ModelAndView("/module/info", model);
     }
 
     @GetMapping("/edit/{id}")
-    public ModelAndView editModulePage(ModelMap model, @PathVariable String id) {
+    public ModelAndView editModulePage(@AuthenticationPrincipal UserDetails user, ModelMap model, @PathVariable String id) {
+        if (moduleService.verifyModuleOwner(user, id)) {
+            return new ModelAndView(new RedirectView("/staff/profile"));
+        }
         model.addAttribute("current_module", moduleService.getModule(Long.parseLong(id)));
         return new ModelAndView("/module/edit", model);
     }
 
     @PostMapping("/edit/{id}")
-    public RedirectView editModule(@AuthenticationPrincipal UserDetails user,Model model, @PathVariable String id, @ModelAttribute Module module) {
+    public RedirectView editModule(@AuthenticationPrincipal UserDetails user, @ModelAttribute Module updatedModule, Model model, @PathVariable String id) {
         Staff staff = staffService.getUser(user);
-        if(moduleService.checkStaff(module,staff)){
-            logger.info(staff.getStf_username() + " tried to edit the info of "+ module.getMdl_name());
+        Module module = moduleService.getModule(Long.parseLong(id));
+
+        if (module.isNotCoordinator(staff)) {
+            logger.warn(staff.getStf_username() + " tried to edit the info of the module: " + module);
             return new RedirectView("/staff/profile");
         }
-        Module updated = moduleService.updateModule(Long.parseLong(id), module);
-        logger.info(staff.getStf_username() + " edited the info of "+ module.getMdl_name());
+
+        Module updated = moduleService.updateModule(Long.parseLong(id), updatedModule);
+        logger.info(staff.getStf_username() +
+                            " edited the info of the module: " +
+                            id +
+                            " from " +
+                            module +
+                            " to " +
+                            updatedModule);
         model.addAttribute("current_module", updated);
         return new RedirectView("/module/edit/" + updated.getMdl_ID());
     }
 
     @GetMapping("/grades/{id}")
-    public ModelAndView selectYearPage(ModelMap model, @PathVariable String id) {
+    public ModelAndView selectYearPage(@AuthenticationPrincipal UserDetails user, ModelMap model, @PathVariable String id) {
+        if (moduleService.verifyModuleOwner(user, id)) {
+            return new ModelAndView(new RedirectView("/staff/profile"));
+        }
+
         Module module = moduleService.getModule(Long.parseLong(id));
         model.addAttribute("current_module", module);
         model.addAttribute("year_list", module.getAllYears());
@@ -104,21 +118,27 @@ public class ModuleController {
     }
 
     @GetMapping("/grades/{id}/{year}")
-    public ModelAndView moduleGradesPage(ModelMap model, @PathVariable String id, @PathVariable String year) {
+    public ModelAndView moduleGradesPage(@AuthenticationPrincipal UserDetails user, ModelMap model, @PathVariable String id, @PathVariable String year) {
+        if (moduleService.verifyModuleOwner(user, id)) {
+            return new ModelAndView(new RedirectView("/staff/profile"));
+        }
         model.addAttribute("current_module", moduleService.getModule(Long.parseLong(id)));
         model.addAttribute("current_year", Integer.parseInt(year));
         return new ModelAndView("/module/grades", model);
     }
 
     @PostMapping("/grades/{id}/{year}")
-    public RedirectView moduleGrades(@AuthenticationPrincipal UserDetails user,@PathVariable String id, @ModelAttribute Module module, @PathVariable String year) {
+    public RedirectView moduleGrades(@AuthenticationPrincipal UserDetails user, @ModelAttribute Module updated, @PathVariable String id, @PathVariable String year) {
         Staff staff = staffService.getUser(user);
-        if(moduleService.checkStaff(module, staff)){
-            logger.info(staff.getStf_username() + " tried to edit the grades of "+ module.getMdl_name());
+        Module module = moduleService.getModule(Long.parseLong(id));
+
+        if (module.isNotCoordinator(staff)) {
+            logger.warn(staff.getStf_username() + " tried to edit the grades of the module: " + module);
             return new RedirectView("/");
         }
-        studentModuleService.updateGrades(module.getStudents(),staff);
-        logger.info(staff.getStf_username() + " edited the grades of "+ module.getMdl_name());
+
+        logger.info(staff.getStf_username() + " edited the grades of module: " + module);
+        studentModuleService.updateGrades(updated.getStudents(), staff);
         return new RedirectView("/module/grades/" + id + "/" + year);
     }
 

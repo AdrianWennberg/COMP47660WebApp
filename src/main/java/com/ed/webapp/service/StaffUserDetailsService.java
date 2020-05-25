@@ -33,14 +33,13 @@ public class StaffUserDetailsService implements UserDetailsService {
         Optional<Staff> user = repository.findByUsername(username);
         String ip = getClientIP();
         if (loginAttemptService.isBlocked(ip)) {
-            logger.info(" blocked IP: "+ip);
-            throw new BlockedIPException("blocked IP: "+ip);
+            logger.info("Login attempt from blocked ip IP: " + ip + " With username: " + username);
+            throw new BlockedIPException("Login attempt from blocked ip IP: " + ip + " With username: " + username);
         }
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found by name: " + username);
         }
         Staff staff = user.get();
-        logger.info("the staff "+ username+" is loggin in");
         return User.withUsername(staff.getStf_username())
                    .password(staff.getStf_password())
                    .roles(staff.getRole())

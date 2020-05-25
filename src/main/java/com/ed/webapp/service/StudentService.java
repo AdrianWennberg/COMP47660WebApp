@@ -1,10 +1,8 @@
 package com.ed.webapp.service;
 
-import com.ed.webapp.WebSecurityConfig;
-import com.ed.webapp.model.Fees;
-import com.ed.webapp.model.Student;
-import com.ed.webapp.model.StudentModule;
+import com.ed.webapp.model.*;
 import com.ed.webapp.repository.StudentRepository;
+import com.ed.webapp.security.DefaultConfigurationAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,7 @@ public class StudentService {
     private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     public void createStudent(Student new_student) {
-        new_student.setStd_password(WebSecurityConfig.encoder().encode(new_student.getStd_password()));
+        new_student.setStd_password(DefaultConfigurationAdapter.encoder().encode(new_student.getStd_password()));
         repository.save(new_student);
     }
 
