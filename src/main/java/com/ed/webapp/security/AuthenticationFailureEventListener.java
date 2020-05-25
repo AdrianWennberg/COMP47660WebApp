@@ -29,7 +29,7 @@ public class AuthenticationFailureEventListener implements ApplicationListener<A
     @Autowired
     private LoginAttemptService loginAttemptService;
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationSuccessEventListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationFailureEventListener.class);
 
 
 
@@ -40,7 +40,7 @@ public class AuthenticationFailureEventListener implements ApplicationListener<A
                 e.getAuthentication().getDetails();
 
         loginAttemptService.loginFailed(auth.getRemoteAddress());
-        logger.info("Login failed by IP " + auth.getRemoteAddress());
+        //logger.info("Login failed by IP " + auth.getRemoteAddress());
 
         /*
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())

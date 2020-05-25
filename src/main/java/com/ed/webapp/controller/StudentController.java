@@ -5,6 +5,8 @@ import com.ed.webapp.model.Student;
 import com.ed.webapp.repository.StudentRepository;
 import com.ed.webapp.service.CheckRegistrationService;
 import com.ed.webapp.service.StudentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +31,8 @@ public class StudentController {
     StudentRepository studentRepository;
     @Autowired
     StudentService studentService;
+
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
 
     @GetMapping("/data")
@@ -72,22 +76,25 @@ public class StudentController {
     public RedirectView createStudent(ModelMap model, @Valid @ModelAttribute Student student, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            System.out.println("error");
+            logger.info("Registration failed");
             model.addAttribute("registration_error", "Incorrect registration!");
             return new RedirectView("/student/registration");
         }
 
         if (!studentService.studentExists(student.getStd_username())) {
+            logger.info("Registration failed");
             model.addAttribute("registration_error", "Incorrect registration!");
             return new RedirectView("/student/registration");
         }
 
         if (!checkRegistrationService.checkFields(student)) {
+            logger.info("Registration failed");
             model.addAttribute("registration_error", "Incorrect registration!");
             return new RedirectView("/student/registration");
         }
 
         studentService.createStudent(student);
+        logger.info(student.getStd_username()+" is registered");
         return new RedirectView("/student/login");
     }
 

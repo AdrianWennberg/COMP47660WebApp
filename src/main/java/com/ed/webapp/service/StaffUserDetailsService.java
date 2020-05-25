@@ -40,7 +40,7 @@ public class StaffUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found by name: " + username);
         }
         Staff staff = user.get();
-        //logger.info("the staff "+ username+" logins");
+        logger.info("the staff "+ username+" is loggin in");
         return User.withUsername(staff.getStf_username())
                    .password(staff.getStf_password())
                    .roles(staff.getRole())

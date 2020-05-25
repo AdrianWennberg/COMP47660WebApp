@@ -41,10 +41,10 @@ public class StudentUserDetailsService implements UserDetailsService {
         }
         if (user.isEmpty()) {
             logger.info(username+" tried to login in");
-            throw new UsernameNotFoundException("User not found by name: " + username);
+            throw new UsernameNotFoundException("blocked");
         }
         Student student = user.get();
-        //logger.info(username+" logins ");
+        logger.info(username+" is logging in ");
         return User.withUsername(student.getStd_username())
                    .password(student.getStd_password())
                    .roles(student.getRole())
