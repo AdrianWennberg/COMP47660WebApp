@@ -90,6 +90,9 @@
                         <input id="student_email" class="form-control" th:field="*{std_email}" type="text">
                     </label>
                 </div>
+                <div th:if="${param.error}" class="alert-danger my-2 p-1">
+                    <span class="text-danger">Registration failed!</span>
+                </div>
                 <input type="submit" value="Update"/>
             </form>
         </div>

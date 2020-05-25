@@ -74,20 +74,17 @@ public class StudentController {
 
         if (bindingResult.hasErrors()) {
             logger.info("Registration failed");
-            model.addAttribute("registration_error", "Incorrect registration!");
-            return new RedirectView("/student/registration");
+            return new RedirectView("/student/registration?error");
         }
 
         if (studentService.studentExists(student.getStd_username())) {
             logger.info("Registration failed");
-            model.addAttribute("registration_error", "Incorrect registration!");
-            return new RedirectView("/student/registration");
+            return new RedirectView("/student/registration?error");
         }
 
         if (!checkRegistrationService.checkFields(student)) {
             logger.info("Registration failed");
-            model.addAttribute("registration_error", "Incorrect registration!");
-            return new RedirectView("/student/registration");
+            return new RedirectView("/student/registration?error");
         }
 
         studentService.createStudent(student);
